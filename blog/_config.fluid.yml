@@ -2,7 +2,7 @@
 # Hexo Theme Fluid 配置覆盖层
 # 2026-07-18: 博客主题从 Butterfly 切换为 Fluid（用户指定）
 # 仅覆盖站点级定制，其余沿用主题默认（标准格式）
-# 导航：主页 / 项目 / 心得 / 归档 / 分类
+# 导航：主页 / 归档 / 分类 / 关于（关于→跳转回个人主页 litmustz.pages.dev/）
 # 搜索由 Fluid 原生 search 功能提供（导航栏自动出现搜索框）
 # 链接用根相对路径，Hexo 会自动拼 root(/blog/) 前缀
 # --------------------------------------
@@ -12,10 +12,9 @@ navbar:
   blog_title: "成长札记"
   menu:
     - { key: "home",     link: "/",                        name: "主页", icon: "iconfont icon-home-fill" }
-    - { key: "project",  link: "/categories/项目/",       name: "项目", icon: "iconfont icon-folder-fill" }
-    - { key: "insight",  link: "/categories/心得/",       name: "心得", icon: "iconfont icon-bookmark-fill" }
     - { key: "archive",  link: "/archives/",              name: "归档", icon: "iconfont icon-archive-fill" }
     - { key: "category", link: "/categories/",            name: "分类", icon: "iconfont icon-category-fill" }
+    - { key: "about",    link: "https://litmustz.pages.dev/", name: "关于", icon: "iconfont icon-user-fill" }
 
 # 搜索（基于已装的 hexo-generator-search，生成 /search.xml）
 search:
