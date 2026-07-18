@@ -346,14 +346,26 @@ a {
     font-weight: 500;
 }
 
-.detail-cover {
+.detail-cover-wrap {
     width: 100%;
-    max-height: 420px;
-    object-fit: cover;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: var(--radius);
     border: 1px solid var(--divider);
     box-shadow: var(--shadow);
     margin: 8px 0 36px;
+    overflow: hidden;
+}
+
+.detail-cover {
+    max-width: 80%;
+    max-height: 80%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .detail-content {
@@ -473,5 +485,9 @@ a {
 
     .detail-content {
         font-size: 0.95rem;
+    }
+
+    .detail-cover-wrap {
+        height: 280px;
     }
 }
