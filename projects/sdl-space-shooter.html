@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDLSpaceShooter | litmustz</title>
+    <meta name="description" content="用 C++17 和 SDL2 从零手写的 2D 太空射击游戏：单例 Game + 场景状态机、帧率无关运动、多分辨率自适应、本地持久化排行榜。">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">litmustz</a>
+            <nav class="main-nav">
+                <a href="/#projects">项目</a>
+                <a href="/blog/">Blog</a>
+                <a href="/#team">关于</a>
+                <a href="/#contact">联系</a>
+                <a href="/en/" class="lang-switch" title="English">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container detail-wrap">
+        <a class="detail-back" href="/#projects">← 返回项目</a>
+
+        <header class="detail-header">
+            <h1 class="detail-title">SDLSpaceShooter</h1>
+            <p class="detail-subtitle">用 C++17 + SDL2 从零手写的 2D 太空射击游戏</p>
+            <div class="detail-tags">
+                <span class="detail-tag">C++17</span>
+                <span class="detail-tag">SDL2</span>
+                <span class="detail-tag">游戏开发</span>
+                <span class="detail-tag">CMake</span>
+                <span class="detail-tag">跨平台</span>
+            </div>
+        </header>
+
+        <img class="detail-cover" src="/assets/projects/sdl-space-shooter/SpaceShip.png" alt="SDLSpaceShooter 飞船">
+
+        <article class="detail-content">
+            <h2>背景</h2>
+            <p>想真正搞懂一个游戏是怎么"跑起来"的，光看引擎封装好的 API 是不够的——渲染循环、帧同步、对象管理这些底层的东西，往往被 Unity、Godot 这类引擎藏在了背后。</p>
+            <p>所以我选了一条更"裸"的路：用 <strong>C++17 + SDL2</strong>，不借助任何游戏引擎，从窗口创建、事件循环到渲染，一行行自己写一个完整的 2D 太空射击游戏。</p>
+            <p>项目的起点是 B 站 UP 主 ZiyuGameDev 的 SDL2 教程，但我没有停在"跟着敲完"这一步——在教程的骨架上，我重写了架构里的几处、并加了一整套自己的玩法和工程化改造。</p>
+
+            <h2>技术栈</h2>
+            <ul>
+                <li><strong>语言</strong>：C++17</li>
+                <li><strong>图形 / 事件</strong>：SDL2</li>
+                <li><strong>扩展库</strong>：SDL2_image（PNG 纹理）、SDL2_ttf（TrueType 字体渲染 UI 与排行榜）、SDL2_mixer（背景音乐 + 音效）</li>
+                <li><strong>构建</strong>：CMake（≥ 3.20），跨 Windows(MinGW) / Linux / macOS 三平台</li>
+                <li><strong>规模</strong>：<code>src/</code> 约 1400 行 C++，另含完整美术、音乐、音效资源</li>
+            </ul>
+
+            <h2>我的角色</h2>
+            <p>从零到打包发布全部我一个人：架构设计、玩法编码、参数调优、跨平台构建、以及最后 Windows 端的 v1.0 打包（解压即玩）。</p>
+            <p>代码上我把整个游戏组织成了两个核心抽象：</p>
+            <h3>1. 单例 Game + 场景状态机</h3>
+            <p><code>Game</code> 用静态局部变量做单例，持有窗口、渲染器、主循环、全局分数和排行榜。游戏的不同阶段拆成三个场景，都继承自 <code>Scene</code> 抽象基类：</p>
+            <ul>
+                <li><code>SceneTitle</code>：标题页</li>
+                <li><code>SceneMain</code>：核心玩法</li>
+                <li><code>SceneEnd</code>：结算 + 输入名字 + 写排行榜</li>
+            </ul>
+            <p><code>Game::changeScene()</code> 负责切换当前场景，事件、更新、渲染三件事统一转发给 <code>currentScene</code>。这样每个场景只管自己的逻辑，主循环干干净净。</p>
+            <h3>2. 数据驱动的对象设计</h3>
+            <p>所有游戏对象（玩家、敌人、双方子弹、爆炸、掉落物、背景）都是 <code>Object.h</code> 里的纯数据 <code>struct</code>，字段就是位置、速度、血量、冷却这些。玩法逻辑集中在 <code>SceneMain</code> 里用 <code>std::list</code> 管理各类对象的生灭。数据和逻辑分离，加新对象或调数值都很轻。</p>
+
+            <h2>难点与解决</h2>
+            <p><strong>① 帧率无关的运动</strong><br>如果直接用"每帧移动 N 像素"，游戏在 144Hz 和 60Hz 的机器上速度就会不一样。解决办法是引入 <code>deltaTime</code>：所有位移都写成 <code>speed * deltaTime * scale</code>，让运动跟真实时间挂钩，而不是跟帧数挂钩。这样任何刷新率下手感一致。</p>
+            <p><strong>② 多分辨率自适应</strong><br>不同显示器分辨率差异很大。我用一个统一的 <code>scale</code> 缩放因子：窗口按屏幕高度的 90% 生成、保持 3:4 比例，然后所有精灵尺寸、移动速度、UI 元素都乘以这个因子。一套代码在任何屏幕上比例都不崩。</p>
+            <p><strong>③ 存档到底该放哪</strong><br>最初排行榜写在项目根目录，结果一打包发布、或者重新下载，存档就丢了。后来改用 <code>SDL_GetPrefPath</code> 写到系统的用户数据目录（Windows 下是 <code>AppData/Roaming</code>）。这才是正确做法——存档跟着用户走，不跟着程序目录走。排行榜本身用 <code>std::multimap&lt;int, string, greater&lt;int&gt;&gt;</code>，插入即自动降序，省掉手动排序。</p>
+            <p><strong>④ 让战斗"有感觉"</strong><br>教程原版打起来偏平淡。我做了几处玩法改造：敌方子弹会计算指向玩家的方向做<strong>追踪</strong>；玩家改成<strong>三连发</strong>、形成横向弹幕；难度<strong>随时间递增</strong>（开局一分钟后刷怪率按 <code>3 + (elapsed-60000)/5000</code> 增长、封顶 8）；再配上精灵表爆炸动画、掉落物撞墙反弹三次、两层星空视差滚动。这些叠起来，手感和节奏就明显不一样了。</p>
+
+            <h2>成果与收获</h2>
+            <ul>
+                <li>一个<strong>从窗口到发布完整闭环</strong>的 2D 游戏，Windows 端解压即玩（<code>dist/SDLSpaceShooter_v1.0.zip</code>）。</li>
+                <li>真正理解了游戏循环的本质：<strong>输入 → 更新（含 deltaTime）→ 渲染</strong>，以及为什么帧率无关这么重要。</li>
+                <li>练到了几个能迁移到任何项目的工程能力：单例与状态机的取舍、数据/逻辑分离、跨平台 CMake 配置、以及"存档/配置该放系统哪个目录"这种容易踩的实际问题。</li>
+                <li>最大的体会是：<strong>跟教程只是起点，真正学到东西是在你开始改它、加自己的想法之后。</strong>平衡性、追踪弹、难度曲线、自适应缩放这些，都是教程之外自己啃下来的。</li>
+            </ul>
+
+            <div class="detail-links">
+                <a class="detail-link" href="https://github.com/Andymaster007/SDLSpaceShooter" target="_blank" rel="noopener">查看源码 →</a>
+            </div>
+            <blockquote>项目基于 ZiyuGameDev 的 SDL2 教程起步，在其基础上做了架构与玩法的二次开发。</blockquote>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Andy. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

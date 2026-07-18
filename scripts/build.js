@@ -29,6 +29,12 @@ if (fs.existsSync(enDir)) {
   fs.cpSync(enDir, path.join(publicDir, 'en'), { recursive: true, force: true });
 }
 
+// 4.5 复制项目详情页到根 public（覆盖）
+const projectsDir = path.join(rootDir, 'projects');
+if (fs.existsSync(projectsDir)) {
+  fs.cpSync(projectsDir, path.join(publicDir, 'projects'), { recursive: true, force: true });
+}
+
 // 5. 复制 Cloudflare Pages _redirects（如存在）
 const redirectsFile = path.join(rootDir, '_redirects');
 if (fs.existsSync(redirectsFile)) {
@@ -39,4 +45,5 @@ console.log('\n✅ Build complete: public/');
 console.log('  - public/index.html (中文)');
 console.log('  - public/en/index.html (English)');
 console.log('  - public/assets/');
+console.log('  - public/projects/ (项目详情页)');
 console.log('  - public/blog/');
