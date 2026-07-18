@@ -28,10 +28,14 @@ Andy（计算机学生）的个人成长博客，由 AI 助手**长期代运营*
 - SSH key：`~/.ssh/id_ed25519`（公钥已加到 GitHub，之后免密 push）。
 - 部署指南见仓库根 `DEPLOY.md`。
 
-## Cloudflare
+## Cloudflare（部署方式已定：Wrangler Direct Upload）
 - 用户已注册 Cloudflare 账号，代码已 push 到 GitHub。
-- 待用户在 Cloudflare Pages **连 GitHub 仓库 `blog`**（需网页 OAuth 授权，AI 无法代做）→ 自动部署（Build `pnpm run build` / 输出 `public`）。
-- 构建坑：Node 版本看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`。
+- **部署方式**：因 Git 集成需用户在 Cloudflare 网页 OAuth 授权 GitHub（AI 无法代点），改为 **Account API Token + Wrangler 直传**：本地 `hexo generate` → `wrangler pages deploy public`。
+- 已装 `wrangler@4.112.0`（devDep），脚本 `pnpm run deploy:cf`。
+- 待用户给 **最小权限 token**（`Cloudflare Pages: Edit`，账户范围）→ 我建 Pages 项目 `blog` 并首次部署。
+- 注意：用户曾误建 Worker `blog.litmustz007.workers.dev`（不是 Pages），部署时需处理同名冲突（改 `blog-site` 或删 Worker）。
+- 安全：token 仅经环境变量传入，不入库/不写记忆；用完提醒删除。
+- 旧方案排错参考（Git 集成用）：Node 看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`（见 DEPLOY.md）。
 
 ## 待办
 - Cloudflare Pages 连 GitHub 自动部署（网页操作）。
