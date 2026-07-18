@@ -4,18 +4,46 @@
 (function () {
   var SCROLL_KEY = 'langScroll';
 
-  // 落到新页面后，恢复切换前的滚动位置
+  // 关闭浏览器默认的滚动恢复，完全由我们接管
+  if ('scrollRestoration' in history) {
+    try { history.scrollRestoration = 'manual'; } catch (e) {}
+  }
+
+  // 落到新页面后，恢复切换前的滚动位置。
+  // Fluid 主题在 load 后可能有回顶/淡入动作，且图片/字体会撑高页面，
+  // 单次 scrollTo 常被覆盖或落空 —— 故持续重试约 1.8s，直到到位或超时；
+  // 一旦用户自己滚动/触屏/按键就立即停手，不跟用户抢。
   function restoreScroll() {
-    var y = null;
-    try { y = sessionStorage.getItem(SCROLL_KEY); } catch (e) {}
-    if (y === null) return;
-    y = parseInt(y, 10);
-    function doScroll() { window.scrollTo(0, y); }
-    // 内容多为服务端渲染，DOM 就绪即可滚；load 后再补一次以应对图片/字体导致的布局变化
-    doScroll();
-    window.addEventListener('load', doScroll);
-    setTimeout(doScroll, 300);
+    var raw = null;
+    try { raw = sessionStorage.getItem(SCROLL_KEY); } catch (e) {}
+    if (raw === null) return;
     try { sessionStorage.removeItem(SCROLL_KEY); } catch (e) {}
+    var y = parseInt(raw, 10);
+    if (isNaN(y) || y <= 0) return;
+
+    var aborted = false;
+    function abort() { aborted = true; }
+    function cleanup() {
+      window.removeEventListener('wheel', abort);
+      window.removeEventListener('touchstart', abort);
+      window.removeEventListener('keydown', abort);
+    }
+    window.addEventListener('wheel', abort, { passive: true });
+    window.addEventListener('touchstart', abort, { passive: true });
+    window.addEventListener('keydown', abort);
+
+    var start = Date.now();
+    var timer = setInterval(function () {
+      if (aborted) { clearInterval(timer); cleanup(); return; }
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var goal = Math.min(y, Math.max(0, max));
+      window.scrollTo(0, goal);
+      var reached = Math.abs(window.scrollY - goal) <= 2 && goal >= y - 2;
+      if (reached || Date.now() - start > 1800) {
+        clearInterval(timer);
+        cleanup();
+      }
+    }, 50);
   }
   restoreScroll();
 
@@ -23,7 +51,9 @@
     var path = location.pathname;
     var isEn = path.indexOf('/en/blog/') === 0;
     var label = isEn ? '中' : 'EN';
-    var target = isEn ? '/blog/' : '/en/blog/';
+    // 切换时跳「当前页面的对应语言版」：仅在路径前加/去 /en 前缀
+    // /blog/... -> /en/blog/...；/en/blog/... -> /blog/...（文章/分类/归档/标签/关于 均适用）
+    var target = isEn ? (path.replace(/^\/en/, '') || '/blog/') : ('/en' + path);
 
     // 点击切换前，记住当前滚动位置
     function bindSave(el) {
