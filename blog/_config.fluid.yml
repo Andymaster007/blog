@@ -9,7 +9,7 @@
 
 # 顶部导航栏
 navbar:
-  blog_title: "成长札记"
+  blog_title: "litmustz's Blog"
   menu:
     - { key: "home",     link: "/",                        name: "主页", icon: "iconfont icon-home-fill" }
     - { key: "archive",  link: "/archives/",              name: "归档", icon: "iconfont icon-archive-fill" }
