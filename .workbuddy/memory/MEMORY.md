@@ -24,8 +24,15 @@ Andy（计算机学生）的个人成长博客，由 AI 助手**长期代运营*
 
 ## Git
 - 默认分支 `main`；`.gitignore` 已忽略 `node_modules/`、`public/`。
-- 全局 git 用户名 `Andymaster007`（疑似 GitHub 账号，待用户确认）。
+- remote：`git@github.com:Andymaster007/blog.git`（**GitHub 用户名已确认 = Andymaster007**，2026-07-18 push 成功）。
+- SSH key：`~/.ssh/id_ed25519`（公钥已加到 GitHub，之后免密 push）。
+- 部署指南见仓库根 `DEPLOY.md`。
+
+## Cloudflare
+- 用户已注册 Cloudflare 账号，代码已 push 到 GitHub。
+- 待用户在 Cloudflare Pages **连 GitHub 仓库 `blog`**（需网页 OAuth 授权，AI 无法代做）→ 自动部署（Build `pnpm run build` / 输出 `public`）。
+- 构建坑：Node 版本看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`。
 
 ## 待办
-- 确认 GitHub 用户名 → 建仓库 + remote + push。
-- 注册 Cloudflare → Pages 连 GitHub 自动部署。
+- Cloudflare Pages 连 GitHub 自动部署（网页操作）。
+- 之后用户发心得 → 我写文 → 预览确认 → push 自动上线。
