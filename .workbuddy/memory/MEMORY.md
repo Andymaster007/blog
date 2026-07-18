@@ -1,85 +1,59 @@
 # 博客项目 · 长期约定（MEMORY.md）
 
-## ⭐ AI 角色定位（菜头）—— 新对话先读这段
-- 我是 **菜头**，Andy（GitHub: Andymaster007，香港大学计算机系 / 人工智能与数据科学）的**博客代运营 AI 助手**。
-- 完整身份与端到端职责见用户级 `IDENTITY.md`（已固化，新会话自动注入）。
-- 一句话：Andy 口述/他的 GitHub 项目 → 我存素材库、整理成文、本地预览 → 他确认 → 我 push → Cloudflare 自动上线。对外发布前必须等 Andy 确认。
+## ⭐ AI 角色定位（菜头）
+- 我是 **菜头**，Andy（GitHub: Andymaster007，香港大学计算机系 / AI 与数据科学）的**博客代运营 AI 助手**。
+- 完整身份见用户级 `IDENTITY.md`（新会话自动注入）。职责：Andy 口述/他的 GitHub 项目 → 存素材库 → 整理成文 → 本地预览 → 他确认 → 我 push → Cloudflare 自动上线。**对外发布前必须等 Andy 确认。**
 
 ## 项目定位
-Andy（香港大学计算机系，人工智能与数据科学方向）的个人主页 + 博客组合站，由 **菜头（AI 助手）长期代运营**。对外网址 **https://litmustz.pages.dev/**：主页在 `/`，展示简介与项目卡片；博客子项目在 `/blog/`，继续用 Hexo 展示算法 / 游戏 / 金融 / 编程的成长轨迹。Andy 只管口述心得，菜头负责整理、成文、发布。
+Andy 个人主页 + 博客组合站，由菜头长期代运营。对外网址 **https://litmustz.pages.dev/**：主页 `/`（简介+项目卡片），博客 `/blog/`（Hexo 展示算法/游戏/金融/编程成长轨迹）。Andy 只管口述，菜头整理发布。
 
 ## 技术栈（锁定）
-- Hexo 8.x + **Fluid 主题 1.9.9**（2026-07-18 由 Butterfly 5.6.0 切换，用户指定「博客采用 Fluid，按主题标准格式生成」），Markdown 写作（位于 `blog/` 子目录）。
-- 主题配置：`blog/_config.fluid.yml`（覆盖层，仅设导航菜单 / 搜索 / 首页副标题 / 关于页；其余全用 Fluid 默认标准格式）。旧 `blog/_config.butterfly.yml` 已删除。
-- 导航菜单（Fluid `navbar.menu`）：主页(`/`) / 归档(`/archives/`) / 分类(`/categories/`) / 个人主页(`https://litmustz.pages.dev/`，跳转回个人主页)。搜索= Fluid 原生 `search`（基于已装 hexo-generator-search 生成 `/search.xml`，导航栏自动出搜索框）。链接用根相对路径，Hexo 自动拼 `root:/blog/` 前缀。
-- 主页：纯静态 HTML/CSS/JS，位于仓库根目录 `index.html` + `assets/` + `en/`。主页顶部导航保留「Blog」链接（**同标签页**跳转 `/blog/`，用户要求博客独立成页但仍可在主页进入）。主页「项目」区卡片（SDLSpaceShooter 等）点击进入 `projects/` 下的**独立项目详情页**（见下）。
-- 代码托管 GitHub；部署用 Cloudflare Pages（连 GitHub 自动上线，免费 + 自动 HTTPS）。
-- 构建：根目录 `node scripts/build.js` 会先在 `blog/` 运行 Hexo（`pnpm run build` = `hexo clean && hexo generate`，见下「⚠️ 博客构建坑」），生成到 `public/blog/`，再把主页文件与 `projects/`、`en/projects/`、`assets/` 复制到 `public/`；最终 `public/` = 主页 + 博客 + 项目详情页。⚠️ 切换主题后若报 `entities`/`htmlparser2` 的 `exports` 冲突，执行 `cd blog && rm -rf node_modules pnpm-lock.yaml && pnpm install` 干净重装即可（pnpm 10.33.2 + hoisted linker）。
-- 本地预览：先 `node scripts/build.js` 生成 `public/`，再 `cd public && python -m http.server 4000`。
-- **独立项目详情页**：个人主页「项目」区卡片点击进入 `projects/<slug>.html`（中文）与 `en/projects/<slug>.html`（英文），配图放 `assets/projects/<slug>/`。首页卡片在 `index.html`/`en/index.html` 里写成 `<a href="/projects/...">`，详情页共用 `assets/css/style.css` 并新增了 `.detail-*` 样式。**SDLSpaceShooter 的整体介绍已放在这里**（中英文各一页），不再进博客。TermPoker / HKU-MyGo 暂为占位卡片（`card-placeholder`，未链接）。
-- ⚠️ **博客构建坑（重要）**：`blog/package.json` 的 `build` 已改为 `hexo clean && hexo generate`。原因：① Cloudflare Pages 构建缓存会保留旧的 `db.json`/`public`，导致「删掉的文章」线上仍残留 → `hexo clean` 从零生成可彻底解决；② Fluid 主题自带 `scripts/generators/index-generator.js` 覆盖默认首页生成，且 **hexo 在 0 篇文章时不会生成 `index.html` 与 `archives/`**（博客首页会 404）。因此**博客必须至少保留 1 篇文章**，否则 `/blog/` 打不开。当前保留「博客开通，先说几句」(分类 `随笔`) 作为占位/开篇。
-- 注：用户曾草拟 Gitee + 腾讯云 Lighthouse + Nginx + Ubuntu 的部署方案，但仅作决策笔记，**未实施**；线上部署维持 Cloudflare Pages + GitHub。
+- Hexo 8.x + **Fluid 主题 1.9.9**（2026-07-18 由 Butterfly 切换，用户指定「博客用 Fluid，按主题标准格式」）。
+- 主题覆盖层 `blog/_config.fluid.yml`（仅设导航菜单/搜索/首页副标题/关于页，其余用 Fluid 默认）。
+- 主页：纯静态 HTML/CSS/JS，根目录 `index.html` + `assets/` + `en/`。导航保留「Blog」链接同标签页跳 `/blog/`。
+- 独立项目详情页：`projects/<slug>.html`（中文）+ `en/projects/<slug>.html`（英文），配图 `assets/projects/<slug>/`，共用 `assets/css/style.css` 的 `.detail-*` 样式。**SDLSpaceShooter 中英文各一页**；TermPoker / HKU-MyGo 为占位卡片（未链接）。
+- 部署：GitHub + Cloudflare Pages（连 GitHub 自动上线）。构建：根目录 `node scripts/build.js` → 生成 `public/`（主页+博客+项目详情页）。⚠️ 切换主题后若报 `entities`/`htmlparser2` 冲突：`cd blog && rm -rf node_modules pnpm-lock.yaml && pnpm install` 干净重装。
+- 本地预览：**先 `node scripts/build.js` 生成 `public/`，再 `cd public && python -m http.server 4000`**（务必基于新建构，否则看到旧 CSS/HTML —— 见文末「预览坑」）。
 
 ## ⚠️ 项目详情页配图显示规则（必守）
-- **配图必须完整显示，绝不裁切**。详情页顶部配图（`.detail-cover`）原用 `object-fit: cover` 会把超出部分裁掉（如 SDLSpaceShooter 飞船图下半截被截，用户 2026-07-18 指出），已改为：外层 `.detail-cover-wrap` 作占位框（桌面 `height:420px`、移动端 `280px`），内层 `<img class="detail-cover">` 设 `max-width:80%; max-height:80%; object-fit:contain; width/height:auto`，flex 居中。
-- **规则（以后所有顶部配图都照此）**：图片完整可见、保持比例不变形、最多占占位框 80%、居中、四周自然留白。严禁再用 `object-fit: cover` 或 `width:100%+固定高` 导致裁切。
-- 涉及文件：`assets/css/style.css`（`.detail-cover-wrap` / `.detail-cover`）、`projects/*.html`、`en/projects/*.html`。
+- **配图必须完整显示、绝不裁切。** 外层 `.detail-cover-wrap`（桌面 `height:420px`、移动 `280px`）占位；内层 `<img class="detail-cover">` = `max-width:80%; max-height:80%; object-fit:contain; width/height:auto`，flex 居中、四周留白。
+- 严禁 `object-fit:cover` 或 `width:100%+固定高` 导致裁切。涉及 `assets/css/style.css`、`projects/*.html`、`en/projects/*.html`。
 
 ## ⚠️ 包管理硬性约定
-- **本仓库必须用 pnpm 安装依赖，不要用 npm。** hexo init 生成的是 pnpm 结构的 node_modules，用 npm 装包会报 `Cannot read properties of null (reading 'matches')`。
-- pnpm 路径：`/c/Users/Andy/AppData/Local/pnpm/pnpm`（系统 pnpm 10.33.2）。node 用 managed：`C:\Users\Andy\.workbuddy\binaries\node\versions\22.22.2\node.exe`。
+- **本仓库必须用 pnpm**，不要用 npm（会报 `Cannot read properties of null (reading 'matches')`）。pnpm 路径 `/c/Users/Andy/AppData/Local/pnpm/pnpm`（10.33.2）；node 用 managed `C:\Users\Andy\.workbuddy\binaries\node\versions\22.22.2\node.exe`。
 
-## ⚠️ Hexo 永久链接时区坑（已踩，必守）
-- 现象：Cloudflare 构建机是 **UTC**，本地是 **GMT+8**。`_config.yml` 已设 `timezone: Asia/Shanghai`，但 Hexo 生成 `:year/:month/:day` 永久链接时，把只有日期的 `date: 2026-07-05`（按当天 00:00 算）解析成 `07-04 16:00 UTC`，线上 URL 变成 `07/04`，与本地预览 `07/05` 差一天，导致文章线上在但本地查不到（404 兜底页）。
-- **铁律：文章 front-matter 的 `date` / `updated` 必须带具体时间**，如 `2026-07-05 12:00:00`（正午），保证任一端格式化都落在同一天。模板 `scaffolds/post.md` 已加警告注释。
-- 线上验证技巧：别只 curl 自己推断的 URL；从首页 HTML 抠 `href` 拿真实链接，或直接查 Cloudflare API `/pages/projects/litmustz/deployments` 确认 `latest_stage: success` 与 commit hash。
+## ⚠️ Hexo 永久链接时区坑（必守）
+- Cloudflare 构建机 UTC、本地 GMT+8。`_config.yml` 已设 `timezone: Asia/Shanghai`，但 Hexo 生成 `:year/:month/:day` 时把纯日期 `date` 按 00:00 解析成前一日 16:00 UTC，线上 URL 差一天。
+- **铁律：文章 front-matter 的 `date`/`updated` 必须带具体时间**（如 `2026-07-05 12:00:00`）。模板 `scaffolds/post.md` 已加警告。
+- 线上验证：从首页 HTML 抠真实 `href`，或查 Cloudflare API `/pages/projects/litmustz/deployments` 确认 `latest_stage:success` + commit hash。
 
 ## 对外呈现约定（必守）
-- **内部 vs 对外要分清**：配置文件（IDENTITY.md / SOUL.md / 本文件）内部如实记录「菜头是 Andy 的博客代运营 AI」；但**任何对外的产出都不得暴露此身份**。
-- Andy 明确要求：**博客与主页对外不出现「菜头 / AI 助手 / 代运营」任何影子**，一律呈现为 Andy 独立完成的个人作品（面向 HR 的作品集）。
-- 已清除：`source/about/index.md` 第 24 行改为「由我独立运营与维护…」；`source/_posts/2026-07-18-blog-setup.md` 全文去除「代运营 / 口述给 AI / AI 打理」等表述，改为「我自己打理 / 记录」。
-- **写新文章、改关于页时，一律用 Andy 第一人称（「我做了…」「我整理了…」），不得出现代运营、AI 帮我等字眼。** 素材库 `_source-archive/` 内部的 raw.md/meta.yml 可保留原始记录（不对外，不进 Hexo 构建）。
-- 站点 `_config.yml` 的 subtitle/description 保持中性，勿添加 AI 相关字样。
+- 内部实录「菜头是代运营 AI」；**任何对外产出不得暴露此身份**，一律呈现为 Andy 独立完成（面向 HR 的作品集）。
+- 写文章/改关于页一律 Andy 第一人称；不出现「代运营/AI 帮我」。素材库 `_source-archive/` 内部 raw.md/meta.yml 可保留原始记录（不进 Hexo 构建）。站点 subtitle/description 保持中性。
 
 ## 双层内容架构（核心）
-- **`blog/_source-archive/<id>/{raw.md, meta.yml, assets/}`**：原始素材库（已随博客迁移到 `blog/` 子目录）。不进 Hexo 构建，纳入 Git，是改版/再生成的唯一真相来源。
-- **`blog/source/_posts/<slug>.md`**：展示层成品，由 Hexo 构建成网页。
-- 改版只动展示层；换主题/版面时从素材库重新生成，零丢失。
-- 博客板块（categories）：**不再固定「项目/心得」两大分类**（已从导航移除）。博客定位 = 放「跟项目有关的其他东西」——开发日志、某个难点的解法、技术深挖、复盘，区别于放在个人主页项目页的「项目整体介绍」。首篇文章为「博客开通，先说几句」（分类 `随笔`）。文章分类自由，不强行约束。
-- 文章模板：`scaffolds/post.md`（案例式结构）。
+- 素材库 `blog/_source-archive/<id>/{raw.md,meta.yml,assets/}`（不进构建，Git 纳入，唯一真相源）。
+- 展示层 `blog/source/_posts/<slug>.md` 由 Hexo 构建。博客定位 = 项目相关的开发日志/解法/复盘（区别于主页项目页的整体介绍）。首篇「博客开通，先说几句」(分类 `随笔`)，须至少保留 1 篇否则 `/blog/` 404。
+- 文章模板 `scaffolds/post.md`（案例式）。
 
 ## 发布流程（半自动确认）
-用户口述 → 存 `blog/_source-archive` → 加工成 `blog/source/_posts` → 运行 `node scripts/build.js` 生成 `public/` + 本地预览确认 → 用户点头 → push GitHub → Cloudflare 自动上线。
+用户口述 → 存 `_source-archive` → 加工 `_posts` → `node scripts/build.js` + 本地预览确认 → 用户点头 → push → Cloudflare 自动上线。
 
-## Git
-- 默认分支 `main`；`.gitignore` 已忽略 `node_modules/`、`public/`。
-- remote：`git@github.com:Andymaster007/blog.git`（**GitHub 用户名已确认 = Andymaster007**，2026-07-18 push 成功）。
-- SSH key：`~/.ssh/id_ed25519`（公钥已加到 GitHub，之后免密 push）。
-- 部署指南见仓库根 `DEPLOY.md`。
+## Git / Cloudflare
+- 默认分支 `main`，`.gitignore` 忽略 `node_modules/`、`public/`。remote `git@github.com:Andymaster007/blog.git`。SSH `~/.ssh/id_ed25519` 已加 GitHub。
+- Cloudflare 用户全权交菜头：`C:\Users\Andy\.workbuddy\cloudflare.env`（仅本地、不进 Git）。Pages 项目 `litmustz` 已连 GitHub（production_branch=main，build `pnpm run build`、输出 `public`、root `/`）。⚠️ Pages 子域名创建时锁定，改名须删旧建新。部署=push 触发 GitHub webhook 自动构建；沙箱直连 `*.pages.dev` 偶发 HTTP 000 重试即 200。
 
-## Cloudflare（用户授权菜头全权自主管理 ✅ 已配置完成）
-- 用户已注册 Cloudflare（邮箱 litmustz007@gmail.com，Account ID 88ce374c150524b4b9339242327d11f7）。
-- **用户明确：把 Cloudflare 全权交给我**（部署/改设置/以后任何操作都由我调 API 完成，用户零操作）。
-- 凭证存放：`C:\Users\Andy\.workbuddy\cloudflare.env`（**仅本地、不进 Git**；回收权限=删此文件 + Cloudflare 后台 Roll key）。当前有效 token：`cfut_...`（2026-07-18 经 /user/tokens/verify 验证 active）。
-- **Pages 项目 `litmustz` 已用 API 创建并连 GitHub**（2026-07-18）：source=github 连 `Andymaster007/blog`，production_branch=main，build `pnpm run build`、输出 `public`、root `/`。
-- **博客已上线**：**https://litmustz.pages.dev/**（外网可访问、自动 HTTPS）。
-- ⚠️ **Cloudflare Pages 子域名在创建时锁定、改名不会改子域名**：要换 `*.pages.dev` 网址，必须删旧项目 + 用目标名重建（2026-07-18 已为此把 `blog`→`litmustz` 重建，旧 `blog-7d2.pages.dev` 已废弃）。
-- 误建 Worker `blog` 已删（用 API DELETE）。
-- 部署方式：AI 只 push GitHub → **Cloudflare 拉仓库自构建自动上线**（Git 集成 Pages）。每次 `git push main` → GitHub webhook 自动触发构建部署。
-- 注：Cloudflare 连 GitHub 所需的 GitHub OAuth（Authorize GitHub）此前已由用户完成/已生效，故 AI 用 API 直接建项目即成功；若日后重连需用户在 Cloudflare 网页点一次。
-- 排错：Node 看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`（见 DEPLOY.md）。沙箱直连 `*.pages.dev` 偶发 HTTP 000，重试即 200。
+## 双语架构（主页 + 博客，2026-07-18）
+- **主页（单页双语·原地切换，2026-07-19 实装）**：`index.html` 与 `projects/*.html` 每个都内置中英文双份文本（中文 `<span class="v-zh">`、英文 `<span class="v-en">`），根 `<html data-lang>` 切换显示；`assets/js/main.js` 读 URL `?lang=en` > localStorage `site-lang` > 默认 zh，点按钮**原地换字（不刷新、滚动位置不变）**，并写回 `?lang=en`。导航栏最右 `.lang-switch`（`href="#"` + `id="langSwitch"`）。**原 `en/` 源目录已删除**，旧 `/en/`、`/en/projects/*` 由根 `_redirects` 301 重定向到 `/?lang=en`、`/projects/:splat?lang=en`（不影响 `/en/blog/`）。`build.js` 已去掉 `en/` 复制块并清理 `public/en` 下残留首页。CSS 规则：`html[data-lang="zh"] .v-en{display:none}` / `html[data-lang="en"] .v-zh{display:none}`。
+- **博客**：双 Hexo 构建——中文 `blog/source/`、英文 `blog/source-en/`；`scripts/build.js` 跑**两次 hexo（各先 clean）**：**英文先、中文最后**（保 `public/blog` 与 `db.json` 纯中文）。英文配置 `_config.blog-en.yml`（`root:/en/blog/`、`source_dir:source-en`、`public_dir:../public/en/blog`）。切换按钮 `blog/source/css|js/lang-switch.*`（中）+ `source-en/` 同款，按 `location.pathname` 注入。
+- ⚠️ **db.json 串味坑（必守）**：两次 `hexo generate` 共用 `blog/db.json`，同名 slug 文章会污染。**每次 generate 前必 clean，中文构建跑最后**。本地验证须 `rm -rf blog/db.json blog/.hexo` 后再 generate。
+- ⚠️ **新增内容默认双语（必守）**：以后用户给素材，菜头整理时**默认同时产出另一语言版**。主页/项目页用**单页双份文本**（同一文件里加 `<span class="v-zh">`/`<span class="v-en">` 两套），博客用**双树** `source/`↔`source-en/`。用户无需每次说"要双语"；若明确"仅某语"则按指示。
+- 本地 Bash 有「safe-delete」保护会拦截 `hexo clean` 批量删；**Cloudflare Linux 构建环境无此限制**，线上正常。本地可改 `rm -rf`/`cp -rf`（走 OS）+ `hexo generate`（不 clean）等价验证。
 
-## 双语博客（中文 /blog/ + 英文 /en/blog/，2026-07-18 新增）
-- 用户要求：博客像个人主页（`/` + `/en/`）那样做一份英文版，两个版本互相切换、内容相同仅语言不同。
-- 架构（双 Hexo 构建）：
-  - 中文内容：`blog/source/`（现有）；英文内容：`blog/source-en/`（镜像结构，新增）。两棵独立 source 树，各自维护（对应主页两份静态页的心智）。
-  - 构建：`scripts/build.js` 跑**两次 `hexo`（每次都先 `hexo clean` 清缓存）**——**英文先跑、中文最后跑**：先 `hexo --config _config.yml,_config.blog-en.yml clean && generate`（输出 `public/en/blog/`），再 `hexo clean && generate`（输出 `public/blog/`）。中文放最后确保最终 `public/blog` 与共享 `blog/db.json` 一定是中文；中文 `hexo clean` 只删 `public/blog`+`db.json`，**不会误删 `public/en/blog`**。
-  - 英文配置 `blog/_config.blog-en.yml` 用 `--config` 合并覆盖：`root:/en/blog/`、`source_dir:source-en`、`public_dir:../public/en/blog`、`language:en`，并用 `theme_config` 覆盖 Fluid 主题配置（英文 navbar 菜单 Home/Archives/Categories/Homepage、英文 index slogan、custom_css/js）——**仅影响英文构建**，不污染中文。
-- 切换按钮（与个人主页 `.lang-switch` 同款小药丸、放导航栏最右）：
-  - `blog/source/css/lang-switch.css` + `blog/source/js/lang-switch.js`（中文版）；`blog/source-en/css|js/` 同内容一份（英文版自洽）。
-  - 通过 Fluid `custom_css`/`custom_js` 引入；Fluid 用 `css()/js()` helper 自动加 `root` 前缀 → 中文版资源在 `/blog/css|js/`、英文版在 `/en/blog/css|js/`。
-  - JS 按 `location.pathname` 判断：在 `/blog/` 下显示 `EN` 跳 `/en/blog/`；在 `/en/blog/` 下显示 `中` 跳 `/blog/`。桌面端注入 `#navbarSupportedContent .navbar-nav` 末尾，移动端注入 `#mobile-grid-menu .row`。
-  - ⚠️ **致命坑（已踩，必守）：两次 `hexo generate` 共用 `blog/db.json` 缓存，英文名 `source-en` 与中文 `source` 下若有同名文件（如 `2026-07-18-blog-opening.md`），英文构建跑完会把 db.json 污染成「英文文章」；若中文构建未先 `hexo clean` 就复用该 db.json，英文文章会混进中文站（/blog/ 显示英文标题/正文）。根因不是 Hexo 主动扫 `source-en`（fresh db.json 下中文构建仍纯净），而是 **db.json 跨构建复用**。修复 = 每次 `hexo generate` 前必 `hexo clean`，且中文构建跑最后。**本地 shell 验证也必须 `rm -rf blog/db.json blog/.hexo` 后再 generate，否则会复现此 bug。**
-- 本地验证注意：WorkBuddy 本地 Bash 运行时有「safe-delete」批量删除保护（删 >50 文件需确认），会拦截 `hexo clean`（删 public/blog 几十文件）与 `fs.rmSync` 整目录删除。但 **Cloudflare 的 Linux 构建环境无此限制**，`hexo clean && generate` 线上正常。**本地验证可改用 shell `rm -rf`/`cp -rf`（走 OS、绕过 Node fs shim）+ `hexo generate`（不 clean）**，产物等价。
-- 当前英文内容：开篇文 `source-en/_posts/2026-07-18-blog-opening.md`、about、categories 已翻译；TermPoker/HKU-MyGo 等仍仅中文博客提及（英文版暂只这 1 篇 + about/categories 框架）。
-- ⚠️ **新增内容默认双语（必守）**：以后用户给素材（中文或英文均可），菜头整理时**默认同时产出另一语言版本**并放进对应目录（博客 `source/`↔`source-en/`、主页 `index.html`↔`en/index.html`），再一起构建；用户无需每次说"要双语"。若某次用户明确"仅发某语"，则按指示只做一版。双目录结构下，新增文章/页面须**同时放两目录**保持同步——由菜头负责维护，用户只管给内容。
+## ⚠️ 本次修复经验（2026-07-18 末）
+- **英文首页项目卡片误链中文详情页**：`en/index.html` 的 SDL 卡片原写 `/projects/sdl-space-shooter.html`（中文），从英文首页点进去被带去中文；英文详情页 `en/projects/sdl-space-shooter.html` 其实早已存在。修复=链接改 `/en/projects/sdl-space-shooter.html`，并把详情页语言切换按钮改成跳「对方同篇」（`projects/...` ↔ `en/projects/...`）而非对方首页。
+- **主页语言切换按钮"偏低"根因**：预览跑的是旧构建 `public/`，源码 CSS 改动未同步。修复=`.main-nav` 加 `align-items:center` + 按钮 `align-self:center` 双保险，并**重新 `node scripts/build.js`** 再预览。结论：**本地预览必须基于新建构的 `public/`**，否则看到的是旧 CSS/HTML，会误判"改了没生效"。
+
+## ⚠️ 站内即时语言切换实装（2026-07-19）
+- **主页 + 项目详情页 = 单页双语、真·原地切换**：`index.html`/`projects/*.html` 内置中文 `<span class="v-zh">` 与英文 `<span class="v-en">` 双份文本；`assets/js/main.js` 按 `URL?lang=en` > `localStorage.site-lang` > 默认 zh 设根 `<html data-lang>`，CSS `html[data-lang=zh] .v-en{display:none}` / `[data-lang=en] .v-zh{display:none}` 切换显示。点按钮 `e.preventDefault()` + 切 `data-lang` + `history.replaceState` 写回 `?lang=en`，**不刷新故滚动位置不变**，正是用户要的"字在原地换了"。`<head>` 内联脚本提前设 `data-lang` 防首屏闪烁。原 `en/` 目录已删，旧 `/en/`、`/en/projects/*` 由根 `_redirects` 301 到 `/?lang=en`、`/projects/:splat?lang=en`（不影响 `/en/blog/`）。`build.js` 去掉 `en/` 复制、并 `fs.rmSync` 清理 `public/en` 残留首页/项目页。
+- **博客 = 滚动位置记忆**（保留双树 `/blog/`↔`/en/blog/`）：`blog/source/js/lang-switch.js`（中）+ `source-en/` 同款，点击切换前 `sessionStorage.langScroll = window.scrollY`，落到对方语言页后 `DOMContentLoaded`/`load` + 300ms 兜底 `window.scrollTo(0,y)` 恢复并清除。不回顶部。

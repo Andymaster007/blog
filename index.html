@@ -1,22 +1,32 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>litmustz</title>
-    <meta name="description" content="Andy 的个人主页：记录算法、游戏开发、金融项目与编程技术的成长轨迹。">
+    <meta name="description" content="Andy 的个人主页 / personal site：记录算法、游戏开发、金融项目与编程技术的成长轨迹。">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        // 提前按 URL/localStorage 设定语言，避免首屏闪烁
+        (function () {
+            try {
+                var p = new URLSearchParams(location.search).get('lang');
+                var l = p === 'en' ? 'en' : (localStorage.getItem('site-lang') || 'zh');
+                document.documentElement.setAttribute('data-lang', l === 'en' ? 'en' : 'zh');
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body>
     <header class="site-header">
         <div class="container header-inner">
-            <a href="#home" class="logo">litmustz</a>
+            <a href="/" class="logo">litmustz</a>
             <nav class="main-nav">
-                <a href="#home">首页</a>
+                <a href="#home"><span class="v-zh">首页</span><span class="v-en">Home</span></a>
                 <a href="/blog/">Blog</a>
-                <a href="#team">关于</a>
-                <a href="#contact">联系</a>
-                <a href="/en/" class="lang-switch" title="English">EN</a>
+                <a href="#team"><span class="v-zh">关于</span><span class="v-en">About</span></a>
+                <a href="#contact"><span class="v-zh">联系</span><span class="v-en">Contact</span></a>
+                <a href="#" class="lang-switch" id="langSwitch" title="切换语言"><span class="v-zh">EN</span><span class="v-en">中文</span></a>
             </nav>
         </div>
     </header>
@@ -24,30 +34,30 @@
     <main>
         <section id="home" class="hero">
             <div class="container">
-                <h1 class="hero-title">嗨，我是 Andy。</h1>
-                <p class="hero-subtitle">香港大学计算机系 · 人工智能与数据科学方向</p>
-                <p class="hero-desc">这里记录我在算法、游戏开发、金融项目与编程技术上的学习、实践与踩坑。</p>
+                <h1 class="hero-title"><span class="v-zh">嗨，我是 Andy。</span><span class="v-en">Hi, I'm Andy.</span></h1>
+                <p class="hero-subtitle"><span class="v-zh">香港大学计算机系 · 人工智能与数据科学方向</span><span class="v-en">University of Hong Kong, Computer Science · AI &amp; Data Science</span></p>
+                <p class="hero-desc"><span class="v-zh">这里记录我在算法、游戏开发、金融项目与编程技术上的学习、实践与踩坑。</span><span class="v-en">A personal space where I document my learning in algorithms, game development, finance projects, and programming.</span></p>
             </div>
         </section>
 
         <section id="projects" class="section">
             <div class="container">
-                <h2 class="section-title">项目</h2>
+                <h2 class="section-title"><span class="v-zh">项目</span><span class="v-en">Projects</span></h2>
                 <div class="card-grid">
                     <a href="/projects/sdl-space-shooter.html" class="project-card">
                         <div class="card-icon icon-game">🎮</div>
                         <h3 class="card-title">SDLSpaceShooter</h3>
-                        <p class="card-desc">C++17 / SDL2 从零手写的 2D 太空射击游戏，完整游戏循环 + 跨平台打包。</p>
+                        <p class="card-desc"><span class="v-zh">C++17 / SDL2 从零手写的 2D 太空射击游戏，完整游戏循环 + 跨平台打包。</span><span class="v-en">A 2D space shooter hand-written from scratch in C++17 / SDL2, with a full game loop and cross-platform builds.</span></p>
                     </a>
                     <div class="project-card card-placeholder">
                         <div class="card-icon icon-poker">🃏</div>
                         <h3 class="card-title">TermPoker</h3>
-                        <p class="card-desc">终端扑克游戏项目（进行中）。</p>
+                        <p class="card-desc"><span class="v-zh">终端扑克游戏项目（进行中）。</span><span class="v-en">Terminal-based poker game project (in progress).</span></p>
                     </div>
                     <div class="project-card card-placeholder">
                         <div class="card-icon icon-web">🌐</div>
                         <h3 class="card-title">HKU-MyGo</h3>
-                        <p class="card-desc">HKU 相关的 React / Web 项目（进行中）。</p>
+                        <p class="card-desc"><span class="v-zh">HKU 相关的 React / Web 项目（进行中）。</span><span class="v-en">HKU-related React / Web project (in progress).</span></p>
                     </div>
                 </div>
             </div>
@@ -55,12 +65,12 @@
 
         <section id="team" class="section section-alt">
             <div class="container">
-                <h2 class="section-title">关于我</h2>
+                <h2 class="section-title"><span class="v-zh">关于我</span><span class="v-en">About Me</span></h2>
                 <div class="team-card">
                     <div class="team-avatar">A</div>
                     <div class="team-info">
                         <h3>Andy</h3>
-                        <p>香港大学计算机系本科，主攻人工智能与数据科学。喜欢折腾算法、游戏开发和金融量化，正在持续学习并记录成长。</p>
+                        <p><span class="v-zh">香港大学计算机系本科，主攻人工智能与数据科学。喜欢折腾算法、游戏开发和金融量化，正在持续学习并记录成长。</span><span class="v-en">CS undergraduate at the University of Hong Kong, majoring in AI &amp; Data Science. I enjoy building things with code — from game engines to finance tools — and I'm learning every step of the way.</span></p>
                     </div>
                 </div>
             </div>
@@ -68,11 +78,11 @@
 
         <section id="contact" class="section">
             <div class="container">
-                <h2 class="section-title">联系方式</h2>
-                <p class="contact-desc">如果你对我的项目或文章感兴趣，欢迎通过以下方式找到我：</p>
+                <h2 class="section-title"><span class="v-zh">联系方式</span><span class="v-en">Contact</span></h2>
+                <p class="contact-desc"><span class="v-zh">如果你对我的项目或文章感兴趣，欢迎通过以下方式找到我：</span><span class="v-en">If you're interested in my work, feel free to reach out:</span></p>
                 <div class="contact-links">
                     <a href="https://github.com/Andymaster007" target="_blank" rel="noopener" class="contact-link">GitHub</a>
-                    <span class="contact-link placeholder">Email（待补充）</span>
+                    <span class="contact-link placeholder"><span class="v-zh">Email（待补充）</span><span class="v-en">Email (TBA)</span></span>
                 </div>
             </div>
         </section>

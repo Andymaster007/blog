@@ -1,3 +1,3 @@
-# Cloudflare Pages 重定向规则
-# 旧文章 URL 已删除，重定向到博客首页
-/blog/2026/07/18/2026-07-18-blog-setup/  /blog/  301
+# 旧英文主页/项目页已合并进单页（?lang=en 入口），这里把历史 /en/ 链接重定向过去
+/en/ /?lang=en 301
+/en/projects/* /projects/:splat?lang=en 301

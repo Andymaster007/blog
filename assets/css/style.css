@@ -70,6 +70,7 @@ a {
 
 .main-nav {
     display: flex;
+    align-items: center;
     gap: 28px;
 }
 
@@ -96,10 +97,22 @@ a {
     border-radius: 6px;
     color: var(--text-muted);
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    line-height: 1.4;
 }
 .lang-switch:hover {
     border-color: var(--brand);
     color: var(--brand);
+}
+
+/* 站内即时语言切换：默认中文；data-lang=en 时隐藏中文、显示英文（原地换字，不刷新） */
+html[data-lang="zh"] .v-en {
+    display: none !important;
+}
+html[data-lang="en"] .v-zh {
+    display: none !important;
 }
 
 /* Hero */

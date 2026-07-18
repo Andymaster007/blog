@@ -1,92 +1,101 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDLSpaceShooter | litmustz</title>
-    <meta name="description" content="用 C++17 和 SDL2 从零手写的 2D 太空射击游戏：单例 Game + 场景状态机、帧率无关运动、多分辨率自适应、本地持久化排行榜。">
+    <meta name="description" content="用 C++17 和 SDL2 从零手写的 2D 太空射击游戏 / A 2D space shooter hand-written from scratch in C++17 and SDL2.">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <script>
+        (function () {
+            try {
+                var p = new URLSearchParams(location.search).get('lang');
+                var l = p === 'en' ? 'en' : (localStorage.getItem('site-lang') || 'zh');
+                document.documentElement.setAttribute('data-lang', l === 'en' ? 'en' : 'zh');
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body>
     <header class="site-header">
         <div class="container header-inner">
             <a href="/" class="logo">litmustz</a>
             <nav class="main-nav">
-                <a href="/#projects">项目</a>
+                <a href="/#projects"><span class="v-zh">项目</span><span class="v-en">Projects</span></a>
                 <a href="/blog/">Blog</a>
-                <a href="/#team">关于</a>
-                <a href="/#contact">联系</a>
-                <a href="/en/" class="lang-switch" title="English">EN</a>
+                <a href="/#team"><span class="v-zh">关于</span><span class="v-en">About</span></a>
+                <a href="/#contact"><span class="v-zh">联系</span><span class="v-en">Contact</span></a>
+                <a href="#" class="lang-switch" id="langSwitch" title="切换语言"><span class="v-zh">EN</span><span class="v-en">中文</span></a>
             </nav>
         </div>
     </header>
 
     <main class="container detail-wrap">
-        <a class="detail-back" href="/#projects">← 返回项目</a>
+        <a class="detail-back" href="/#projects"><span class="v-zh">← 返回项目</span><span class="v-en">← Back to projects</span></a>
 
         <header class="detail-header">
             <h1 class="detail-title">SDLSpaceShooter</h1>
-            <p class="detail-subtitle">用 C++17 + SDL2 从零手写的 2D 太空射击游戏</p>
+            <p class="detail-subtitle"><span class="v-zh">用 C++17 + SDL2 从零手写的 2D 太空射击游戏</span><span class="v-en">A 2D space shooter hand-written from scratch in C++17 + SDL2</span></p>
             <div class="detail-tags">
                 <span class="detail-tag">C++17</span>
                 <span class="detail-tag">SDL2</span>
-                <span class="detail-tag">游戏开发</span>
+                <span class="detail-tag"><span class="v-zh">游戏开发</span><span class="v-en">Game Dev</span></span>
                 <span class="detail-tag">CMake</span>
-                <span class="detail-tag">跨平台</span>
+                <span class="detail-tag"><span class="v-zh">跨平台</span><span class="v-en">Cross-platform</span></span>
             </div>
         </header>
 
         <div class="detail-cover-wrap">
-            <img class="detail-cover" src="/assets/projects/sdl-space-shooter/SpaceShip.png" alt="SDLSpaceShooter 飞船">
+            <img class="detail-cover" src="/assets/projects/sdl-space-shooter/SpaceShip.png" alt="SDLSpaceShooter ship">
         </div>
 
         <article class="detail-content">
-            <h2>背景</h2>
-            <p>想真正搞懂一个游戏是怎么"跑起来"的，光看引擎封装好的 API 是不够的——渲染循环、帧同步、对象管理这些底层的东西，往往被 Unity、Godot 这类引擎藏在了背后。</p>
-            <p>所以我选了一条更"裸"的路：用 <strong>C++17 + SDL2</strong>，不借助任何游戏引擎，从窗口创建、事件循环到渲染，一行行自己写一个完整的 2D 太空射击游戏。</p>
-            <p>项目的起点是 B 站 UP 主 ZiyuGameDev 的 SDL2 教程，但我没有停在"跟着敲完"这一步——在教程的骨架上，我重写了架构里的几处、并加了一整套自己的玩法和工程化改造。</p>
+            <h2><span class="v-zh">背景</span><span class="v-en">Background</span></h2>
+            <p><span class="v-zh">想真正搞懂一个游戏是怎么"跑起来"的，光看引擎封装好的 API 是不够的——渲染循环、帧同步、对象管理这些底层的东西，往往被 Unity、Godot 这类引擎藏在了背后。</span><span class="v-en">To really understand how a game "runs", reading engine-wrapped APIs isn't enough — the render loop, frame sync, and object management are exactly what engines like Unity or Godot hide behind the scenes.</span></p>
+            <p><span class="v-zh">所以我选了一条更"裸"的路：用 <strong>C++17 + SDL2</strong>，不借助任何游戏引擎，从窗口创建、事件循环到渲染，一行行自己写一个完整的 2D 太空射击游戏。</span><span class="v-en">So I chose the more "bare" path: with <strong>C++17 + SDL2</strong>, without any game engine, I wrote a complete 2D space shooter line by line — from window creation and the event loop all the way to rendering.</span></p>
+            <p><span class="v-zh">项目的起点是 B 站 UP 主 ZiyuGameDev 的 SDL2 教程，但我没有停在"跟着敲完"这一步——在教程的骨架上，我重写了架构里的几处、并加了一整套自己的玩法和工程化改造。</span><span class="v-en">The project started from ZiyuGameDev's SDL2 tutorial on Bilibili, but I didn't stop at "typing along". On top of the tutorial's skeleton I rewrote several parts of the architecture and added a whole set of my own gameplay and engineering improvements.</span></p>
 
-            <h2>技术栈</h2>
+            <h2><span class="v-zh">技术栈</span><span class="v-en">Tech Stack</span></h2>
             <ul>
-                <li><strong>语言</strong>：C++17</li>
-                <li><strong>图形 / 事件</strong>：SDL2</li>
-                <li><strong>扩展库</strong>：SDL2_image（PNG 纹理）、SDL2_ttf（TrueType 字体渲染 UI 与排行榜）、SDL2_mixer（背景音乐 + 音效）</li>
-                <li><strong>构建</strong>：CMake（≥ 3.20），跨 Windows(MinGW) / Linux / macOS 三平台</li>
-                <li><strong>规模</strong>：<code>src/</code> 约 1400 行 C++，另含完整美术、音乐、音效资源</li>
+                <li><span class="v-zh"><strong>语言</strong>：C++17</span><span class="v-en"><strong>Language</strong>: C++17</span></li>
+                <li><span class="v-zh"><strong>图形 / 事件</strong>：SDL2</span><span class="v-en"><strong>Graphics / Events</strong>: SDL2</span></li>
+                <li><span class="v-zh"><strong>扩展库</strong>：SDL2_image（PNG 纹理）、SDL2_ttf（TrueType 字体渲染 UI 与排行榜）、SDL2_mixer（背景音乐 + 音效）</span><span class="v-en"><strong>Extensions</strong>: SDL2_image (PNG textures), SDL2_ttf (TrueType UI &amp; leaderboard rendering), SDL2_mixer (BGM + SFX)</span></li>
+                <li><span class="v-zh"><strong>构建</strong>：CMake（≥ 3.20），跨 Windows(MinGW) / Linux / macOS 三平台</span><span class="v-en"><strong>Build</strong>: CMake (≥ 3.20), cross-platform on Windows (MinGW) / Linux / macOS</span></li>
+                <li><span class="v-zh"><strong>规模</strong>：<code>src/</code> 约 1400 行 C++，另含完整美术、音乐、音效资源</span><span class="v-en"><strong>Scale</strong>: ~1400 lines of C++ in <code>src/</code>, plus full art, music, and sound assets</span></li>
             </ul>
 
-            <h2>我的角色</h2>
-            <p>从零到打包发布全部我一个人：架构设计、玩法编码、参数调优、跨平台构建、以及最后 Windows 端的 v1.0 打包（解压即玩）。</p>
-            <p>代码上我把整个游戏组织成了两个核心抽象：</p>
-            <h3>1. 单例 Game + 场景状态机</h3>
-            <p><code>Game</code> 用静态局部变量做单例，持有窗口、渲染器、主循环、全局分数和排行榜。游戏的不同阶段拆成三个场景，都继承自 <code>Scene</code> 抽象基类：</p>
+            <h2><span class="v-zh">我的角色</span><span class="v-en">My Role</span></h2>
+            <p><span class="v-zh">从零到打包发布全部我一个人：架构设计、玩法编码、参数调优、跨平台构建、以及最后 Windows 端的 v1.0 打包（解压即玩）。</span><span class="v-en">From zero to a shippable build, entirely on my own: architecture design, gameplay coding, parameter tuning, cross-platform builds, and finally the Windows v1.0 package (unzip &amp; play).</span></p>
+            <p><span class="v-zh">代码上我把整个游戏组织成了两个核心抽象：</span><span class="v-en">I organized the whole game around two core abstractions:</span></p>
+            <h3><span class="v-zh">1. 单例 Game + 场景状态机</span><span class="v-en">1. Singleton Game + scene state machine</span></h3>
+            <p><span class="v-zh"><code>Game</code> 用静态局部变量做单例，持有窗口、渲染器、主循环、全局分数和排行榜。游戏的不同阶段拆成三个场景，都继承自 <code>Scene</code> 抽象基类：</span><span class="v-en"><code>Game</code> is a singleton via a static local variable, holding the window, renderer, main loop, global score, and leaderboard. The game's phases are split into three scenes, all inheriting from the abstract <code>Scene</code> base class:</span></p>
             <ul>
-                <li><code>SceneTitle</code>：标题页</li>
-                <li><code>SceneMain</code>：核心玩法</li>
-                <li><code>SceneEnd</code>：结算 + 输入名字 + 写排行榜</li>
+                <li><span class="v-zh"><code>SceneTitle</code>：标题页</span><span class="v-en"><code>SceneTitle</code>: title screen</span></li>
+                <li><span class="v-zh"><code>SceneMain</code>：核心玩法</span><span class="v-en"><code>SceneMain</code>: core gameplay</span></li>
+                <li><span class="v-zh"><code>SceneEnd</code>：结算 + 输入名字 + 写排行榜</span><span class="v-en"><code>SceneEnd</code>: results + name input + leaderboard write</span></li>
             </ul>
-            <p><code>Game::changeScene()</code> 负责切换当前场景，事件、更新、渲染三件事统一转发给 <code>currentScene</code>。这样每个场景只管自己的逻辑，主循环干干净净。</p>
-            <h3>2. 数据驱动的对象设计</h3>
-            <p>所有游戏对象（玩家、敌人、双方子弹、爆炸、掉落物、背景）都是 <code>Object.h</code> 里的纯数据 <code>struct</code>，字段就是位置、速度、血量、冷却这些。玩法逻辑集中在 <code>SceneMain</code> 里用 <code>std::list</code> 管理各类对象的生灭。数据和逻辑分离，加新对象或调数值都很轻。</p>
+            <p><span class="v-zh"><code>Game::changeScene()</code> 负责切换当前场景，事件、更新、渲染三件事统一转发给 <code>currentScene</code>。这样每个场景只管自己的逻辑，主循环干干净净。</span><span class="v-en"><code>Game::changeScene()</code> switches the active scene, and input/update/render are uniformly forwarded to <code>currentScene</code>. Each scene only cares about its own logic, keeping the main loop clean.</span></p>
+            <h3><span class="v-zh">2. 数据驱动的对象设计</span><span class="v-en">2. Data-driven object design</span></h3>
+            <p><span class="v-zh">所有游戏对象（玩家、敌人、双方子弹、爆炸、掉落物、背景）都是 <code>Object.h</code> 里的纯数据 <code>struct</code>，字段就是位置、速度、血量、冷却这些。玩法逻辑集中在 <code>SceneMain</code> 里用 <code>std::list</code> 管理各类对象的生灭。数据和逻辑分离，加新对象或调数值都很轻。</span><span class="v-en">Every game object (player, enemies, both sides' bullets, explosions, drops, background) is a plain-data <code>struct</code> in <code>Object.h</code> — fields like position, velocity, HP, cooldown. Gameplay logic lives in <code>SceneMain</code>, managing each object list's lifecycle with <code>std::list</code>. Separating data from logic makes adding objects or tuning numbers lightweight.</span></p>
 
-            <h2>难点与解决</h2>
-            <p><strong>① 帧率无关的运动</strong><br>如果直接用"每帧移动 N 像素"，游戏在 144Hz 和 60Hz 的机器上速度就会不一样。解决办法是引入 <code>deltaTime</code>：所有位移都写成 <code>speed * deltaTime * scale</code>，让运动跟真实时间挂钩，而不是跟帧数挂钩。这样任何刷新率下手感一致。</p>
-            <p><strong>② 多分辨率自适应</strong><br>不同显示器分辨率差异很大。我用一个统一的 <code>scale</code> 缩放因子：窗口按屏幕高度的 90% 生成、保持 3:4 比例，然后所有精灵尺寸、移动速度、UI 元素都乘以这个因子。一套代码在任何屏幕上比例都不崩。</p>
-            <p><strong>③ 存档到底该放哪</strong><br>最初排行榜写在项目根目录，结果一打包发布、或者重新下载，存档就丢了。后来改用 <code>SDL_GetPrefPath</code> 写到系统的用户数据目录（Windows 下是 <code>AppData/Roaming</code>）。这才是正确做法——存档跟着用户走，不跟着程序目录走。排行榜本身用 <code>std::multimap&lt;int, string, greater&lt;int&gt;&gt;</code>，插入即自动降序，省掉手动排序。</p>
-            <p><strong>④ 让战斗"有感觉"</strong><br>教程原版打起来偏平淡。我做了几处玩法改造：敌方子弹会计算指向玩家的方向做<strong>追踪</strong>；玩家改成<strong>三连发</strong>、形成横向弹幕；难度<strong>随时间递增</strong>（开局一分钟后刷怪率按 <code>3 + (elapsed-60000)/5000</code> 增长、封顶 8）；再配上精灵表爆炸动画、掉落物撞墙反弹三次、两层星空视差滚动。这些叠起来，手感和节奏就明显不一样了。</p>
+            <h2><span class="v-zh">难点与解决</span><span class="v-en">Challenges &amp; Solutions</span></h2>
+            <p><span class="v-zh"><strong>① 帧率无关的运动</strong><br>如果直接用"每帧移动 N 像素"，游戏在 144Hz 和 60Hz 的机器上速度就会不一样。解决办法是引入 <code>deltaTime</code>：所有位移都写成 <code>speed * deltaTime * scale</code>，让运动跟真实时间挂钩，而不是跟帧数挂钩。这样任何刷新率下手感一致。</span><span class="v-en"><strong>① Framerate-independent motion</strong><br>Moving "N pixels per frame" makes the game run at different speeds on 144Hz vs 60Hz machines. The fix is <code>deltaTime</code>: every displacement becomes <code>speed * deltaTime * scale</code>, tying motion to real time instead of frame count — consistent feel on any refresh rate.</span></p>
+            <p><span class="v-zh"><strong>② 多分辨率自适应</strong><br>不同显示器分辨率差异很大。我用一个统一的 <code>scale</code> 缩放因子：窗口按屏幕高度的 90% 生成、保持 3:4 比例，然后所有精灵尺寸、移动速度、UI 元素都乘以这个因子。一套代码在任何屏幕上比例都不崩。</span><span class="v-en"><strong>② Multi-resolution scaling</strong><br>Displays vary a lot. I use a single <code>scale</code> factor: the window is generated at 90% of screen height with a fixed 3:4 ratio, then all sprite sizes, movement speeds, and UI elements multiply by that factor. One codebase, no broken proportions on any screen.</span></p>
+            <p><span class="v-zh"><strong>③ 存档到底该放哪</strong><br>最初排行榜写在项目根目录，结果一打包发布、或者重新下载，存档就丢了。后来改用 <code>SDL_GetPrefPath</code> 写到系统的用户数据目录（Windows 下是 <code>AppData/Roaming</code>）。这才是正确做法——存档跟着用户走，不跟着程序目录走。排行榜本身用 <code>std::multimap&lt;int, string, greater&lt;int&gt;&gt;</code>，插入即自动降序，省掉手动排序。</span><span class="v-en"><strong>③ Where should saves go</strong><br>The leaderboard was first written to the project root — then a packaged release or re-download lost it. I switched to <code>SDL_GetPrefPath</code>, writing to the system user-data directory (AppData/Roaming on Windows). That's the correct approach — saves follow the user, not the program directory. The leaderboard itself uses <code>std::multimap&lt;int, string, greater&lt;int&gt;&gt;</code>, auto-sorted descending on insert, no manual sort.</span></p>
+            <p><span class="v-zh"><strong>④ 让战斗"有感觉"</strong><br>教程原版打起来偏平淡。我做了几处玩法改造：敌方子弹会计算指向玩家的方向做<strong>追踪</strong>；玩家改成<strong>三连发</strong>、形成横向弹幕；难度<strong>随时间递增</strong>（开局一分钟后刷怪率按 <code>3 + (elapsed-60000)/5000</code> 增长、封顶 8）；再配上精灵表爆炸动画、掉落物撞墙反弹三次、两层星空视差滚动。这些叠起来，手感和节奏就明显不一样了。</span><span class="v-en"><strong>④ Making combat "feel" right</strong><br>The tutorial's original felt flat. I added several gameplay tweaks: enemy bullets compute a direction toward the player to <strong>track</strong> them; the player fires <strong>three-shot bursts</strong> forming a horizontal bullet pattern; difficulty <strong>ramps over time</strong> (spawn rate grows by <code>3 + (elapsed-60000)/5000</code> after the first minute, capped at 8); plus sprite-sheet explosion animation, drops bouncing off walls three times, and a two-layer parallax starfield. Stacked together, the feel and pacing change noticeably.</span></p>
 
-            <h2>成果与收获</h2>
+            <h2><span class="v-zh">成果与收获</span><span class="v-en">Outcome &amp; Takeaways</span></h2>
             <ul>
-                <li>一个<strong>从窗口到发布完整闭环</strong>的 2D 游戏，Windows 端解压即玩（<code>dist/SDLSpaceShooter_v1.0.zip</code>）。</li>
-                <li>真正理解了游戏循环的本质：<strong>输入 → 更新（含 deltaTime）→ 渲染</strong>，以及为什么帧率无关这么重要。</li>
-                <li>练到了几个能迁移到任何项目的工程能力：单例与状态机的取舍、数据/逻辑分离、跨平台 CMake 配置、以及"存档/配置该放系统哪个目录"这种容易踩的实际问题。</li>
-                <li>最大的体会是：<strong>跟教程只是起点，真正学到东西是在你开始改它、加自己的想法之后。</strong>平衡性、追踪弹、难度曲线、自适应缩放这些，都是教程之外自己啃下来的。</li>
+                <li><span class="v-zh">一个<strong>从窗口到发布完整闭环</strong>的 2D 游戏，Windows 端解压即玩（<code>dist/SDLSpaceShooter_v1.0.zip</code>）。</span><span class="v-en">A 2D game with a <strong>complete loop from window to release</strong>, unzip-and-play on Windows (<code>dist/SDLSpaceShooter_v1.0.zip</code>).</span></li>
+                <li><span class="v-zh">真正理解了游戏循环的本质：<strong>输入 → 更新（含 deltaTime）→ 渲染</strong>，以及为什么帧率无关这么重要。</span><span class="v-en">A real grasp of the game loop's essence: <strong>input → update (with deltaTime) → render</strong>, and why framerate independence matters.</span></li>
+                <li><span class="v-zh">练到了几个能迁移到任何项目的工程能力：单例与状态机的取舍、数据/逻辑分离、跨平台 CMake 配置、以及"存档/配置该放系统哪个目录"这种容易踩的实际问题。</span><span class="v-en">Engineering skills that transfer to any project: singleton vs state-machine tradeoffs, data/logic separation, cross-platform CMake config, and the easy-to-trip practical question of "which system directory should saves/config live in".</span></li>
+                <li><span class="v-zh">最大的体会是：<strong>跟教程只是起点，真正学到东西是在你开始改它、加自己的想法之后。</strong>平衡性、追踪弹、难度曲线、自适应缩放这些，都是教程之外自己啃下来的。</span><span class="v-en">Biggest lesson: <strong>following a tutorial is only the start; you truly learn once you begin changing it and adding your own ideas.</strong> Balance, tracking bullets, difficulty curves, adaptive scaling — all chewed through beyond the tutorial.</span></li>
             </ul>
 
             <div class="detail-links">
-                <a class="detail-link" href="https://github.com/Andymaster007/SDLSpaceShooter" target="_blank" rel="noopener">查看源码 →</a>
+                <a class="detail-link" href="https://github.com/Andymaster007/SDLSpaceShooter" target="_blank" rel="noopener"><span class="v-zh">查看源码 →</span><span class="v-en">View source →</span></a>
             </div>
-            <blockquote>项目基于 ZiyuGameDev 的 SDL2 教程起步，在其基础上做了架构与玩法的二次开发。</blockquote>
+            <blockquote><span class="v-zh">项目基于 ZiyuGameDev 的 SDL2 教程起步，在其基础上做了架构与玩法的二次开发。</span><span class="v-en">Built on top of ZiyuGameDev's SDL2 tutorial, with architecture and gameplay redeveloped further.</span></blockquote>
         </article>
     </main>
 
@@ -95,5 +104,7 @@
             <p>&copy; 2026 Andy. All rights reserved.</p>
         </div>
     </footer>
+
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

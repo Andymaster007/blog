@@ -32,15 +32,14 @@ console.log('  - public/blog/ (中文)');
 // 2. 确保根 public 目录存在
 fs.mkdirSync(publicDir, { recursive: true });
 
+// 2.5 清理旧的英文静态首页（已合并进单页，避免 public/en/index.html、public/en/projects 残留）
+//    注意：博客的 public/en/blog 由 hexo 重新生成，不受此影响。
+fs.rmSync(path.join(publicDir, 'en', 'index.html'), { force: true });
+fs.rmSync(path.join(publicDir, 'en', 'projects'), { recursive: true, force: true });
+
 // 3. 复制主页静态文件到根 public（覆盖）
 fs.cpSync(path.join(rootDir, 'assets'), path.join(publicDir, 'assets'), { recursive: true, force: true });
 fs.copyFileSync(path.join(rootDir, 'index.html'), path.join(publicDir, 'index.html'));
-
-// 4. 复制英文主页到根 public（覆盖）
-const enDir = path.join(rootDir, 'en');
-if (fs.existsSync(enDir)) {
-  fs.cpSync(enDir, path.join(publicDir, 'en'), { recursive: true, force: true });
-}
 
 // 4.5 复制项目详情页到根 public（覆盖）
 const projectsDir = path.join(rootDir, 'projects');
