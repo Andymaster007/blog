@@ -1,0 +1,10 @@
+title: 用 C++ 和 SDL2 做一个太空射击游戏
+date: 2026-07-05
+category: 游戏项目
+tags: [C++, SDL2, 游戏开发, CMake]
+project: SDLSpaceShooter
+type: project
+excerpt: '一个用 C++17 + SDL2 从零写的 2D 太空射击游戏：单例 Game + 场景状态机架构，deltaTime 帧率无关运动，多分辨率自适应缩放，本地持久化排行榜。基于教程起步，做了平衡性、三连发、难度递增等一系列自己的改造。'
+cover: ''
+source: 'GitHub 仓库 github.com/Andymaster007/SDLSpaceShooter，AI 抓取 README + 源码整理成文'
+note: '本文由 AI 从 Andy 的公开 GitHub 仓库自动收集整理。原始 README 见 assets/original-README.md；技术细节取自 src/ 源码（Game/Scene/Object 等）。'
