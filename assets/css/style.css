@@ -171,20 +171,25 @@ a {
 }
 
 .card-icon {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    font-size: 1.25rem;
-    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 14px;
+    background: var(--bg-base);
+    color: var(--text-label);
+    border: 1px solid var(--divider);
 }
 
-.icon-blog { background: #eff6ff; }
-.icon-game { background: #fef2f2; }
-.icon-poker { background: #fffbeb; }
-.icon-web { background: #f0fdf4; }
+.icon-blog,
+.icon-game,
+.icon-poker,
+.icon-web {
+    background: var(--bg-base);
+}
 
 .card-title {
     font-size: 1.1rem;

@@ -12,27 +12,21 @@ function run(cmd, cwd) {
   execSync(cmd, { cwd: cwd || rootDir, stdio: 'inherit' });
 }
 
-// 1. 构建博客
+// 1. 构建博客（Hexo 输出到 ../public/blog）
 run('pnpm install', blogDir);
 run('pnpm run build', blogDir);
 
-// 2. 清理并创建根 public
-if (fs.existsSync(publicDir)) {
-  fs.rmSync(publicDir, { recursive: true, force: true });
-}
+// 2. 确保根 public 目录存在
 fs.mkdirSync(publicDir, { recursive: true });
 
-// 3. 复制博客输出到 public/blog
-fs.cpSync(path.join(blogDir, 'public'), path.join(publicDir, 'blog'), { recursive: true });
-
-// 4. 复制主页静态文件
-fs.cpSync(path.join(rootDir, 'assets'), path.join(publicDir, 'assets'), { recursive: true });
+// 3. 复制主页静态文件到根 public（覆盖）
+fs.cpSync(path.join(rootDir, 'assets'), path.join(publicDir, 'assets'), { recursive: true, force: true });
 fs.copyFileSync(path.join(rootDir, 'index.html'), path.join(publicDir, 'index.html'));
 
-// 5. 复制英文主页
+// 4. 复制英文主页到根 public（覆盖）
 const enDir = path.join(rootDir, 'en');
 if (fs.existsSync(enDir)) {
-  fs.cpSync(enDir, path.join(publicDir, 'en'), { recursive: true });
+  fs.cpSync(enDir, path.join(publicDir, 'en'), { recursive: true, force: true });
 }
 
 console.log('\n✅ Build complete: public/');
