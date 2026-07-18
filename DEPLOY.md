@@ -22,7 +22,7 @@
    - Production branch：`main`
 5. 点 **Save and Deploy**
 
-> **同名冲突**：你之前误建过一个 Worker `blog.litmustz007.workers.dev`，若 Pages 项目名 `blog` 因此不让用，就填 **`blog-site`** 或 **`andy-blog`**（网址变 `blog-site.pages.dev`，功能一样）。那个 Worker 可在其 Settings 里删掉，不删也不碍事。
+> **当前项目名**：Pages 项目名已定为 **`litmustz`**，网址即 **https://litmustz.pages.dev/**。注意 Cloudflare Pages 的子域名在创建时锁定、改名不会改网址，所以要换 `*.pages.dev` 必须删旧项目 + 用目标名重建（由 AI 用 API 全权处理，用户无需操作）。
 
 部署成功后会得到一个 `*.pages.dev` 网址，之后每次 `git push` 到 `main` 都会自动重新构建上线。**无需任何 Cloudflare API Token**——GitHub 授权是在网页点出来的 OAuth，token 替代不了也用不上。
 

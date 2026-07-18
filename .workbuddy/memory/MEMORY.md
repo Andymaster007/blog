@@ -28,15 +28,14 @@ Andy（计算机学生）的个人成长博客，由 AI 助手**长期代运营*
 - SSH key：`~/.ssh/id_ed25519`（公钥已加到 GitHub，之后免密 push）。
 - 部署指南见仓库根 `DEPLOY.md`。
 
-## Cloudflare（部署方式：GitHub 集成，Cloudflare 拉仓库自构建 —— 纯网页设置，无 token）
-- 用户已注册 Cloudflare 账号，代码已 push 到 GitHub（main 分支）。
-- **部署方式（用户明确指定）**：AI 只 push 到 GitHub，**Cloudflare 拉仓库、自己构建、自动上线**（Git 集成 Pages，非 Wrangler 直传）。
-- 2026-07-18 已移除 wrangler 直传：`package.json` 删 `deploy:cf` 与 `wrangler` devDep，恢复老套路（commit c09d718）。
-- 用户曾误建 **Worker** `blog.litmustz007.workers.dev`（不是 Pages），需用户在网页建 Pages 项目时处理同名（改用 `blog-site`/`andy-blog` 或先删 Worker）。
-- **最终确定的设置路径（纯网页，不需要 API token）**：因 Cloudflare↔GitHub 必须用户本人做 GitHub OAuth 授权（AI 无法代做），故直接让用户在该流程里建好 Pages 项目：Workers & Pages → Create → Pages → Connect to Git → Authorize GitHub → 选 `blog` 仓库 → Build `pnpm run build` / 输出 `public` / 分支 `main` → Deploy。
-- 注：用户账户 Cloudflare token 模板只有「Edit Cloudflare Workers」，无「Edit Cloudflare Pages」，故放弃 token 方案，改纯网页。
-- 排错：Node 看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`（见 DEPLOY.md）。
-
-## 待办
-- 用户在 Cloudflare 网页建 Pages 项目连 GitHub 仓库（Done 后发我 `*.pages.dev` 网址 + 用的项目名）。
-- 验证自动部署 → 之后用户发心得 → 我写文 → 预览确认 → push 自动上线。
+## Cloudflare（用户授权 AI 全权自主管理 ✅ 已配置完成）
+- 用户已注册 Cloudflare（邮箱 litmustz007@gmail.com，Account ID 88ce374c150524b4b9339242327d11f7）。
+- **用户明确：把 Cloudflare 全权交给我**（部署/改设置/以后任何操作都由我调 API 完成，用户零操作）。
+- 凭证存放：`C:\Users\Andy\.workbuddy\cloudflare.env`（**仅本地、不进 Git**；回收权限=删此文件 + Cloudflare 后台 Roll key）。当前有效 token：`cfut_...`（2026-07-18 经 /user/tokens/verify 验证 active）。
+- **Pages 项目 `litmustz` 已用 API 创建并连 GitHub**（2026-07-18）：source=github 连 `Andymaster007/blog`，production_branch=main，build `pnpm run build`、输出 `public`、root `/`。
+- **博客已上线**：**https://litmustz.pages.dev/**（外网可访问、自动 HTTPS）。
+- ⚠️ **Cloudflare Pages 子域名在创建时锁定、改名不会改子域名**：要换 `*.pages.dev` 网址，必须删旧项目 + 用目标名重建（2026-07-18 已为此把 `blog`→`litmustz` 重建，旧 `blog-7d2.pages.dev` 已废弃）。
+- 误建 Worker `blog` 已删（用 API DELETE）。
+- 部署方式：AI 只 push GitHub → **Cloudflare 拉仓库自构建自动上线**（Git 集成 Pages）。每次 `git push main` → GitHub webhook 自动触发构建部署。
+- 注：Cloudflare 连 GitHub 所需的 GitHub OAuth（Authorize GitHub）此前已由用户完成/已生效，故 AI 用 API 直接建项目即成功；若日后重连需用户在 Cloudflare 网页点一次。
+- 排错：Node 看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`（见 DEPLOY.md）。沙箱直连 `*.pages.dev` 偶发 HTTP 000，重试即 200。
