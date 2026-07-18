@@ -41,9 +41,9 @@ importers:
       hexo-server:
         specifier: ^3.0.0
         version: 3.0.0
-      hexo-theme-butterfly:
-        specifier: ^5.6.0
-        version: 5.6.0
+      hexo-theme-fluid:
+        specifier: ^1.9.9
+        version: 1.9.9(nunjucks@3.2.4(chokidar@3.6.0))
       hexo-util:
         specifier: ^4.0.0
         version: 4.0.0
@@ -510,8 +510,11 @@ packages:
     resolution: {integrity: sha512-u4s0ty9Aew6jV+a9oMrXBwhrRpUQ0U8PWM/88a5aHgDru58VY81mVrxOFxs788NAsWQ8OvsJtF5m7mnXoRnSIA==}
     engines: {node: '>=12.13.0'}
 
-  hexo-theme-butterfly@5.6.0:
-    resolution: {integrity: sha512-qfL1+pmdXqp6unwilE3EMYPGgukyO5r5k7MplfhVAfvAgtv5M/PBNGmI/38nFG0mKE22PKlNVs0ehEFSYaOSHA==}
+  hexo-theme-fluid@1.9.9:
+    resolution: {integrity: sha512-Z1EgMiIOeVpaNYQsjUi1PWIA9li/7bkUK+WEL8ehV5uj7nU3VjkAPqSrJDCLV4fDdwFX8HBDM3CaNfl14VKx3g==}
+    engines: {node: '>=8.10.0'}
+    peerDependencies:
+      nunjucks: ^3.0.0
 
   hexo-util@3.3.0:
     resolution: {integrity: sha512-YvGngXijE2muEh5L/VI4Fmjqb+/yAkmY+VuyhWVoRwQu1X7bmWodsfYRXX7CUYhi5LqsvH8FAe/yBW1+f6ZX4Q==}
@@ -1556,14 +1559,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  hexo-theme-butterfly@5.6.0:
+  hexo-theme-fluid@1.9.9(nunjucks@3.2.4(chokidar@3.6.0)):
     dependencies:
-      hexo-renderer-pug: 3.0.0
-      hexo-renderer-stylus: 3.0.1
-      hexo-util: 4.0.0
-      moment-timezone: 0.6.2
-    transitivePeerDependencies:
-      - supports-color
+      nunjucks: 3.2.4(chokidar@3.6.0)
 
   hexo-util@3.3.0:
     dependencies:

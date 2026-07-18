@@ -1,0 +1,41 @@
+# --------------------------------------
+# Hexo Theme Fluid 配置覆盖层
+# 2026-07-18: 博客主题从 Butterfly 切换为 Fluid（用户指定）
+# 仅覆盖站点级定制，其余沿用主题默认（标准格式）
+# 导航：主页 / 项目 / 心得 / 归档 / 分类
+# 搜索由 Fluid 原生 search 功能提供（导航栏自动出现搜索框）
+# 链接用根相对路径，Hexo 会自动拼 root(/blog/) 前缀
+# --------------------------------------
+
+# 顶部导航栏
+navbar:
+  blog_title: "成长札记"
+  menu:
+    - { key: "home",     link: "/",                        name: "主页", icon: "iconfont icon-home-fill" }
+    - { key: "project",  link: "/categories/项目/",       name: "项目", icon: "iconfont icon-folder-fill" }
+    - { key: "insight",  link: "/categories/心得/",       name: "心得", icon: "iconfont icon-bookmark-fill" }
+    - { key: "archive",  link: "/archives/",              name: "归档", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/",            name: "分类", icon: "iconfont icon-category-fill" }
+
+# 搜索（基于已装的 hexo-generator-search，生成 /search.xml）
+search:
+  enable: true
+  path: /search.xml
+  generate_path: /search.xml
+  field: post
+  content: true
+
+# 首页副标题
+index:
+  slogan:
+    enable: true
+    text: "记录算法 / 游戏 / 金融 / 编程 的成长轨迹"
+
+# 关于页（/about/，不在顶部导航，但保留正确信息）
+about:
+  enable: true
+  name: "Andy"
+  intro: "香港大学计算机系 · 人工智能与数据科学"
+  avatar: /img/avatar.png
+  icons:
+    - { class: "iconfont icon-github-fill", link: "https://github.com/Andymaster007", tip: "GitHub" }
