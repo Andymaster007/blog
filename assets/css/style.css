@@ -89,6 +89,19 @@ a {
     font-weight: 600;
 }
 
+.lang-switch {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+.lang-switch:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+}
+
 /* Hero */
 .hero {
     padding: 120px 0 100px;

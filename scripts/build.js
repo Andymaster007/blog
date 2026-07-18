@@ -29,7 +29,14 @@ fs.cpSync(path.join(blogDir, 'public'), path.join(publicDir, 'blog'), { recursiv
 fs.cpSync(path.join(rootDir, 'assets'), path.join(publicDir, 'assets'), { recursive: true });
 fs.copyFileSync(path.join(rootDir, 'index.html'), path.join(publicDir, 'index.html'));
 
+// 5. 复制英文主页
+const enDir = path.join(rootDir, 'en');
+if (fs.existsSync(enDir)) {
+  fs.cpSync(enDir, path.join(publicDir, 'en'), { recursive: true });
+}
+
 console.log('\n✅ Build complete: public/');
-console.log('  - public/index.html');
+console.log('  - public/index.html (中文)');
+console.log('  - public/en/index.html (English)');
 console.log('  - public/assets/');
 console.log('  - public/blog/');
