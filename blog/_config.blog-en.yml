@@ -1,0 +1,29 @@
+# 英文博客构建覆盖配置
+# 用法：hexo --config _config.yml,_config.blog-en.yml generate
+# 与 _config.yml 合并，本文件同名项覆盖前者；theme_config 覆盖 Fluid 主题配置（仅影响英文构建）
+# 对应个人主页的 /en/ 英文版，博客英文版路径为 /en/blog/
+
+# Hexo 主配置覆盖
+root: /en/blog/
+url: https://litmustz.pages.dev/en/blog
+source_dir: source-en
+public_dir: ../public/en/blog
+language: en
+
+# 覆盖 Fluid 主题配置（仅英文构建生效）
+theme_config:
+  navbar:
+    blog_title: "litmustz's Blog"
+    menu:
+      - { key: "home",     link: "/",            name: "Home",      icon: "iconfont icon-home-fill" }
+      - { key: "archive",  link: "/archives/",   name: "Archives",  icon: "iconfont icon-archive-fill" }
+      - { key: "category", link: "/categories/", name: "Categories", icon: "iconfont icon-category-fill" }
+      - { key: "about",    link: "https://litmustz.pages.dev/", name: "Homepage", icon: "iconfont icon-user-fill" }
+  index:
+    slogan:
+      enable: true
+      text: "Tracking my growth in algorithms / games / finance / programming"
+  custom_css:
+    - css/lang-switch.css
+  custom_js:
+    - js/lang-switch.js

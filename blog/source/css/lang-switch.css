@@ -1,0 +1,26 @@
+/* 语言切换按钮：与个人主页 .lang-switch 同款小药丸样式
+   适配 Fluid 深色导航栏（白描边 + 浅字，hover 变白） */
+/* 关键：.navbar-nav 默认 align-items:stretch，菜单项 li 被拉满导航栏高度；
+   普通 nav-link 靠 block + 上下 padding 居中，而本按钮是 inline-flex 的 a，
+   会被顶到上方导致略高。故让外层 li 用 flex 居中，使其与 nav-link 严格同行。 */
+.lang-switch-item {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+.lang-switch {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 0.2s ease;
+    line-height: 1.4;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+}
+.lang-switch:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+}

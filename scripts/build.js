@@ -12,9 +12,22 @@ function run(cmd, cwd) {
   execSync(cmd, { cwd: cwd || rootDir, stdio: 'inherit' });
 }
 
-// 1. 构建博客（Hexo 输出到 ../public/blog）
+// 1. 安装依赖
 run('pnpm install', blogDir);
-run('pnpm run build', blogDir);
+
+// 1.5 先构建英文博客（clean + generate，输出到 ../public/en/blog）
+//     注意：英文构建会改写共享的 db.json，必须 clean 避免残留中文缓存；
+//     同时中文构建放在最后跑，保证最终 public/blog 与 db.json 一定是中文。
+run('pnpm exec hexo --config _config.yml,_config.blog-en.yml clean', blogDir);
+run('pnpm exec hexo --config _config.yml,_config.blog-en.yml generate', blogDir);
+console.log('  - public/en/blog/ (English)');
+
+// 1.6 最后构建中文博客（clean + generate，输出到 ../public/blog）
+//     中文的 public_dir 是 public/blog，hexo clean 只会删 public/blog 与 db.json，
+//     不会误删 public/en/blog；跑在最后确保 db.json 最终为纯中文。
+run('pnpm exec hexo clean', blogDir);
+run('pnpm exec hexo generate', blogDir);
+console.log('  - public/blog/ (中文)');
 
 // 2. 确保根 public 目录存在
 fs.mkdirSync(publicDir, { recursive: true });
@@ -46,4 +59,5 @@ console.log('  - public/index.html (中文)');
 console.log('  - public/en/index.html (English)');
 console.log('  - public/assets/');
 console.log('  - public/projects/ (项目详情页)');
-console.log('  - public/blog/');
+console.log('  - public/blog/ (中文博客)');
+console.log('  - public/en/blog/ (English blog)');
