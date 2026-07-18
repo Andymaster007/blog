@@ -28,15 +28,15 @@ Andy（计算机学生）的个人成长博客，由 AI 助手**长期代运营*
 - SSH key：`~/.ssh/id_ed25519`（公钥已加到 GitHub，之后免密 push）。
 - 部署指南见仓库根 `DEPLOY.md`。
 
-## Cloudflare（部署方式已定：Wrangler Direct Upload）
-- 用户已注册 Cloudflare 账号，代码已 push 到 GitHub。
-- **部署方式**：因 Git 集成需用户在 Cloudflare 网页 OAuth 授权 GitHub（AI 无法代点），改为 **Account API Token + Wrangler 直传**：本地 `hexo generate` → `wrangler pages deploy public`。
-- 已装 `wrangler@4.112.0`（devDep），脚本 `pnpm run deploy:cf`。
-- 待用户给 **最小权限 token**（`Cloudflare Pages: Edit`，账户范围）→ 我建 Pages 项目 `blog` 并首次部署。
-- 注意：用户曾误建 Worker `blog.litmustz007.workers.dev`（不是 Pages），部署时需处理同名冲突（改 `blog-site` 或删 Worker）。
-- 安全：token 仅经环境变量传入，不入库/不写记忆；用完提醒删除。
-- 旧方案排错参考（Git 集成用）：Node 看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`（见 DEPLOY.md）。
+## Cloudflare（部署方式：GitHub 集成，Cloudflare 拉仓库自构建 —— 纯网页设置，无 token）
+- 用户已注册 Cloudflare 账号，代码已 push 到 GitHub（main 分支）。
+- **部署方式（用户明确指定）**：AI 只 push 到 GitHub，**Cloudflare 拉仓库、自己构建、自动上线**（Git 集成 Pages，非 Wrangler 直传）。
+- 2026-07-18 已移除 wrangler 直传：`package.json` 删 `deploy:cf` 与 `wrangler` devDep，恢复老套路（commit c09d718）。
+- 用户曾误建 **Worker** `blog.litmustz007.workers.dev`（不是 Pages），需用户在网页建 Pages 项目时处理同名（改用 `blog-site`/`andy-blog` 或先删 Worker）。
+- **最终确定的设置路径（纯网页，不需要 API token）**：因 Cloudflare↔GitHub 必须用户本人做 GitHub OAuth 授权（AI 无法代做），故直接让用户在该流程里建好 Pages 项目：Workers & Pages → Create → Pages → Connect to Git → Authorize GitHub → 选 `blog` 仓库 → Build `pnpm run build` / 输出 `public` / 分支 `main` → Deploy。
+- 注：用户账户 Cloudflare token 模板只有「Edit Cloudflare Workers」，无「Edit Cloudflare Pages」，故放弃 token 方案，改纯网页。
+- 排错：Node 看 `.nvmrc`(22)，报错改 20；pnpm 报错改 `npx hexo generate`（见 DEPLOY.md）。
 
 ## 待办
-- Cloudflare Pages 连 GitHub 自动部署（网页操作）。
-- 之后用户发心得 → 我写文 → 预览确认 → push 自动上线。
+- 用户在 Cloudflare 网页建 Pages 项目连 GitHub 仓库（Done 后发我 `*.pages.dev` 网址 + 用的项目名）。
+- 验证自动部署 → 之后用户发心得 → 我写文 → 预览确认 → push 自动上线。
