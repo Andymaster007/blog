@@ -14,7 +14,7 @@ navbar:
     - { key: "home",     link: "/",                        name: "主页", icon: "iconfont icon-home-fill" }
     - { key: "archive",  link: "/archives/",              name: "归档", icon: "iconfont icon-archive-fill" }
     - { key: "category", link: "/categories/",            name: "分类", icon: "iconfont icon-category-fill" }
-    - { key: "about",    link: "https://litmustz.pages.dev/", name: "关于", icon: "iconfont icon-user-fill" }
+    - { key: "about",    link: "https://litmustz.pages.dev/", name: "个人主页", icon: "iconfont icon-user-fill" }
 
 # 搜索（基于已装的 hexo-generator-search，生成 /search.xml）
 search:
