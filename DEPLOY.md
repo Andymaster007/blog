@@ -1,35 +1,47 @@
 # 部署到 Cloudflare Pages（GitHub 自动部署）
 
-部署架构：本地写 Markdown → push 到 GitHub → Cloudflare Pages 自动拉取并构建 → 全球访问 + 自动 HTTPS。
+部署架构：本地写 Markdown / 改主页 → push 到 GitHub → Cloudflare Pages 自动拉取并构建 → 全球访问 + 自动 HTTPS。
 
-> 当前 git remote 已指向 `git@github.com:Andymaster007/blog.git`（用户名已确认 = Andymaster007）。代码已 push 到 `main`，SSH 公钥已加、空仓库已建。**以下步骤只剩 Cloudflare 连接这一步。**
+当前站点结构：
+- **主页**：`litmustz.pages.dev/`（静态 HTML + CSS + JS，项目入口）
+- **博客**：`litmustz.pages.dev/blog/`（Hexo + Butterfly 子项目）
 
-## 一、已完成的准备（无需重做）
-- ✅ GitHub SSH 公钥已添加，可免密推送
-- ✅ 空仓库 `blog` 已建好
-- ✅ 代码已 `git push` 到 `main`（含 `_source-archive/` 素材库 + `source/_posts/` 文章 + 主题配置 `_config.butterfly.yml`）
-- ✅ 已移除 wrangler 直传方案，部署走「GitHub 集成 Pages」（Cloudflare 拉仓库自构建）
+## 仓库结构
 
-## 二、你只需做 1 件网页操作：在 Cloudflare 连接 GitHub（一次性）
-1. 登录 Cloudflare → 左侧 **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
-2. 点 **Authorize GitHub**（弹窗里登录 `Andymaster007` 的 GitHub 账号并授权）
-3. 仓库列表选 **blog**
-4. 构建设置填：
-   - Framework preset：**None（无）**
-   - Build command：`pnpm run build`
-   - Build output directory：`public`
-   - Root directory：默认 `/`（不动）
-   - Production branch：`main`
-5. 点 **Save and Deploy**
+```
+D:\Github\Blog/
+├── index.html                 # 主页
+├── assets/                    # 主页静态资源（css/js）
+├── scripts/build.js           # 根构建脚本：构建博客 + 合并主页
+├── .nvmrc                     # Node 22（Cloudflare 读取）
+├── blog/                      # Hexo 博客完整目录
+│   ├── _config.yml            # 已设置 root: /blog/
+│   ├── package.json
+│   ├── source/                # 展示层文章
+│   ├── _source-archive/       # 原始素材库
+│   └── ...
+└── .workbuddy/memory/         # 项目记忆
+```
 
-> **当前项目名**：Pages 项目名已定为 **`litmustz`**，网址即 **https://litmustz.pages.dev/**。注意 Cloudflare Pages 的子域名在创建时锁定、改名不会改网址，所以要换 `*.pages.dev` 必须删旧项目 + 用目标名重建（由 AI 用 API 全权处理，用户无需操作）。
+## 构建命令（Cloudflare Pages 设置）
 
-部署成功后会得到一个 `*.pages.dev` 网址，之后每次 `git push` 到 `main` 都会自动重新构建上线。**无需任何 Cloudflare API Token**——GitHub 授权是在网页点出来的 OAuth，token 替代不了也用不上。
+- **Framework preset**：None
+- **Build command**：`node scripts/build.js`
+- **Build output directory**：`public`
+- **Root directory**：`/`
+- **Production branch**：`main`
 
-## 四、日常发文章流程
-你只管把心得发给我 → 我存素材库 + 写文章 + 本地预览给你确认 → 你点头 → 我 `git push` → Cloudflare 几十秒后自动上线。
+`scripts/build.js` 会先做 `cd blog && pnpm install && pnpm run build`，再把 `blog/public` 复制到 `public/blog/`，最后把主页文件复制到 `public/` 根目录。
 
-## 五、可能踩的坑
-- **Node 版本报错**：把仓库根目录 `.nvmrc` 里的 `22` 改成 `20` 再 push（Cloudflare 构建环境若没有 Node 22 时会用到）。
-- **pnpm 构建报错**：把 Build command 改为 `npx hexo generate` 再部署。
-- **Cloudflare 连不上 GitHub 仓库**：确认仓库名确实是 `blog`、且已成功 push 了一次代码（空仓库不会被列出）。
+## 日常流程
+
+1. 写博客：在 `blog/source/_posts/` 新增 Markdown 文章（沿用双层架构：`blog/_source-archive/` 存素材）。
+2. 改主页：编辑 `index.html` 或 `assets/`。
+3. 本地预览：运行 `node scripts/build.js` 生成 `public/`，再启动静态服务器（如 `python -m http.server 4000`）。
+4. 确认后 `git push origin main`，Cloudflare 自动构建上线。
+
+## 注意事项
+
+- **Node 版本**：仓库根 `.nvmrc` 为 `22`。Cloudflare 构建环境若报错，可改为 `20`。
+- **pnpm 报错**：若 Cloudflare 对 pnpm 支持异常，可临时把 Build command 改成 `npx hexo generate` 相关命令，但优先保持 `node scripts/build.js`。
+- **子域名已锁定**：Pages 项目名为 `litmustz`，网址 `https://litmustz.pages.dev/`。要换 `*.pages.dev` 必须删旧项目重建，由 AI 用 API 处理。
