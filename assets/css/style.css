@@ -347,7 +347,7 @@ a {
 }
 
 .detail-cover-wrap {
-    width: 100%;
+    max-width: 760px;
     height: 420px;
     display: flex;
     justify-content: center;
@@ -370,6 +370,7 @@ a {
 
 .detail-content {
     max-width: 760px;
+    font-size: 1.125rem;
 }
 
 .detail-content h2 {
@@ -484,7 +485,7 @@ a {
     }
 
     .detail-content {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
 
     .detail-cover-wrap {
