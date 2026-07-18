@@ -44,9 +44,6 @@ importers:
       hexo-theme-butterfly:
         specifier: ^5.6.0
         version: 5.6.0
-      hexo-theme-landscape:
-        specifier: ^1.0.0
-        version: 1.1.0
       hexo-wordcount:
         specifier: ^6.0.1
         version: 6.0.1
@@ -509,9 +506,6 @@ packages:
 
   hexo-theme-butterfly@5.6.0:
     resolution: {integrity: sha512-qfL1+pmdXqp6unwilE3EMYPGgukyO5r5k7MplfhVAfvAgtv5M/PBNGmI/38nFG0mKE22PKlNVs0ehEFSYaOSHA==}
-
-  hexo-theme-landscape@1.1.0:
-    resolution: {integrity: sha512-nszjixBEiEDZjf7glAGbHg0nKGHZdUDwzFVVdRDeu4FeHfGcY5CZNl9sF4vSligjnD8IwFXpDfx5E+GRmNKvWg==}
 
   hexo-util@3.3.0:
     resolution: {integrity: sha512-YvGngXijE2muEh5L/VI4Fmjqb+/yAkmY+VuyhWVoRwQu1X7bmWodsfYRXX7CUYhi5LqsvH8FAe/yBW1+f6ZX4Q==}
@@ -1564,8 +1558,6 @@ snapshots:
       moment-timezone: 0.6.2
     transitivePeerDependencies:
       - supports-color
-
-  hexo-theme-landscape@1.1.0: {}
 
   hexo-util@3.3.0:
     dependencies:
