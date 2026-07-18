@@ -29,6 +29,12 @@ if (fs.existsSync(enDir)) {
   fs.cpSync(enDir, path.join(publicDir, 'en'), { recursive: true, force: true });
 }
 
+// 5. 复制 Cloudflare Pages _redirects（如存在）
+const redirectsFile = path.join(rootDir, '_redirects');
+if (fs.existsSync(redirectsFile)) {
+  fs.copyFileSync(redirectsFile, path.join(publicDir, '_redirects'));
+}
+
 console.log('\n✅ Build complete: public/');
 console.log('  - public/index.html (中文)');
 console.log('  - public/en/index.html (English)');

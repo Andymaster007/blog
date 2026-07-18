@@ -1,0 +1,3 @@
+# Cloudflare Pages 重定向规则
+# 旧文章 URL 已删除，重定向到博客首页
+/blog/2026/07/18/2026-07-18-blog-setup/  /blog/  301
